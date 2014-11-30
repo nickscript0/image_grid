@@ -1,11 +1,14 @@
-import BeautifulSoup
 import urllib2
+import urllib
+import os.path
+
+import BeautifulSoup
 
 # BOI wiki constants
 BASE_URL = 'http://bindingofisaacrebirth.gamepedia.com'
 MAIN_DIV_ID = "mw-content-text"
 
-RESOURCE_PATH = 'scripts/isaac_grid/res'
+RESOURCE_PATH = 'dev/isaac_grid/res'
 
 def get_table(bs=None):
     TABLE1_ID = "wikitable"
@@ -13,29 +16,44 @@ def get_table(bs=None):
     if bs is None:
         bs = bs_from_url(BASE_URL+'/Collection_Page')
     
-    # Parse one table
+    # Parse FIRST table
     # TODO parse all six tables
     div1 = bs.find('div', attrs={'id': MAIN_DIV_ID})
     t1 = div1.find('table', attrs={'class': TABLE1_ID})
     els = t1.findAll('td')
     
+    ## FOR NOW just save the 1st image in the table
+    current_el = els[0]
     # Get image
-    img_url = els[0].find('img')['src'] # Image path
-    urllib.urlretrieve(els[0].find('img')['src'], RESOURCE_PATH+image_name_from_url(img_url))
+    img_url = current_el.find('img')['src']
+    save_image(img_url)
     
     # Get description
-    els[0].find('a')['href'] # Description page url
+    desc_filename = image_name_from_url(img_url).split('.')[0] + '.txt'
+    desc_rel_url = current_el.find('a')['href'] # Description page url
+    save_description(desc_rel_url, desc_filename)
                 
+    return
+
+def save_image(img_url):
+    path = os.path.join(RESOURCE_PATH, image_name_from_url(img_url))
+    urllib.urlretrieve(img_url, path)
+    debug('Saved '+path)
     
-    #debug('div1=%s' %(div1))
-    return t1
-            
+def save_description(desc_relative_url, name):
+    path = os.path.join(RESOURCE_PATH, name)
+    open(path, 'w').write(get_description(desc_relative_url))
+    debug('Saved '+path)
+    
 def get_description(desc_relative_url):
+    """
+    Give a rel url of an item page e.g. '/SomeName' return the description of the page
+    """
     bs = bs_from_url(BASE_URL+desc_relative_url)
     
     # Location: The first <p> after the first <h2> in MAIN_DIV
     div1 = bs.find('div', attrs={'id': MAIN_DIV_ID})
-    return div1.find('h2').findNext('p').text
+    return div1.find('h2').findNextSibling().text
     
 def bs_from_url(url):
     """
