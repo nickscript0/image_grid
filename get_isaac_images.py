@@ -1,6 +1,7 @@
 import urllib2
 import urllib
 import os.path
+import re
 
 import BeautifulSoup
 
@@ -10,7 +11,7 @@ MAIN_DIV_ID = "mw-content-text"
 
 RESOURCE_PATH = 'dev/isaac_grid/res'
 
-def get_table(bs=None):
+def save_table(bs=None):
     TABLE1_ID = "wikitable"
     
     if bs is None:
@@ -22,18 +23,18 @@ def get_table(bs=None):
     t1 = div1.find('table', attrs={'class': TABLE1_ID})
     els = t1.findAll('td')
     
-    ## FOR NOW just save the 1st image in the table
-    current_el = els[0]
+    for td in els:
+        save_td(td)
+
+def save_td(td):
     # Get image
-    img_url = current_el.find('img')['src']
+    img_url = td.find('img')['src']
     save_image(img_url)
     
     # Get description
     desc_filename = image_name_from_url(img_url).split('.')[0] + '.txt'
-    desc_rel_url = current_el.find('a')['href'] # Description page url
+    desc_rel_url = td.find('a')['href'] # Description page url
     save_description(desc_rel_url, desc_filename)
-                
-    return
 
 def save_image(img_url):
     path = os.path.join(RESOURCE_PATH, image_name_from_url(img_url))
@@ -51,9 +52,18 @@ def get_description(desc_relative_url):
     """
     bs = bs_from_url(BASE_URL+desc_relative_url)
     
-    # Location: The first <p> after the first <h2> in MAIN_DIV
+    # Location: The next sibling of the <h2> parent of <span id="Effect|Effects"> in MAIN_DIV
     div1 = bs.find('div', attrs={'id': MAIN_DIV_ID})
-    return div1.find('h2').findNextSibling().text
+
+    re_effect = re.compile("[Ee]ffect[s]{0,1}")
+    span = div1.find('span', attrs={'id': re_effect})
+    
+    # Find next sibling that is not a span
+    parent_span = span.parent
+    next_el = parent_span.findNextSibling()
+    while(str(next_el.name) == 'span'):
+        next_el = parent_span.findNextSibling()
+    return next_el.text
     
 def bs_from_url(url):
     """
@@ -61,6 +71,7 @@ def bs_from_url(url):
     """
     # Non-browser user-agent was giving 403 reponse
     req = urllib2.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
+    debug('Made Request: '+url)
     res = urllib2.urlopen(req).read()
     return BeautifulSoup.BeautifulSoup(res)
 
