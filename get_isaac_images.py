@@ -1,5 +1,6 @@
 import urllib2
 import urllib
+import os
 import os.path
 import re
 
@@ -11,12 +12,9 @@ MAIN_DIV_ID = "mw-content-text"
 
 RESOURCE_PATH = 'dev/isaac_grid/res'
 
-# TODO: Don't re-request resources already saved
-already_saved = {}
+
 
 def save_table(bs=None):
-    
-    
     TABLE1_ID = "wikitable"
     
     if bs is None:
@@ -28,9 +26,20 @@ def save_table(bs=None):
     t1 = div1.find('table', attrs={'class': TABLE1_ID})
     els = t1.findAll('td')
     
+    already_saved = get_already_saved()
     for td in els:
-        save_td(td)
+        image_name = image_name_from_url(td.find('img')['src']).split('.')[0]
+        if image_name not in already_saved:
+            save_td(td)
 
+def get_already_saved():
+    """
+    Returns a set of img names already saved to disk.
+    """
+    files = os.listdir(RESOURCE_PATH)
+    unique_names = set([x.split('.')[0] for x in files if x.find('.') != -1])
+    return unique_names
+        
 def save_td(td):
     # Get image
     img_url = td.find('img')['src']
