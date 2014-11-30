@@ -14,20 +14,28 @@ RESOURCE_PATH = 'dev/isaac_grid/res'
 
 
 
-def save_table(bs=None):
+def save_tables(bs=None):
     TABLE1_ID = "wikitable"
     
     if bs is None:
         bs = bs_from_url(BASE_URL+'/Collection_Page')
     
-    # Parse FIRST table
-    # TODO parse all six tables
+    # Loop through all wikitables on page
     div1 = bs.find('div', attrs={'id': MAIN_DIV_ID})
-    t1 = div1.find('table', attrs={'class': TABLE1_ID})
-    els = t1.findAll('td')
+    current_table = div1.findNext('table', attrs={'class': TABLE1_ID})
+    i = 1
+    while(current_table != None):
+        tds = current_table.findAll('td')
+        #save_table(tds)
+        debug('save_table ' + str(i))
+        current_table = current_table.findNextSibling('table', attrs={'class': TABLE1_ID})
+        i += 1
     
+    
+def save_table(table_tds):
     already_saved = get_already_saved()
-    for td in els:
+    # Loop through each table <td>
+    for td in table_tds:
         image_name = image_name_from_url(td.find('img')['src']).split('.')[0]
         if image_name not in already_saved:
             save_td(td)
