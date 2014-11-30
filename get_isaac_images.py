@@ -11,7 +11,12 @@ MAIN_DIV_ID = "mw-content-text"
 
 RESOURCE_PATH = 'dev/isaac_grid/res'
 
+# TODO: Don't re-request resources already saved
+already_saved = {}
+
 def save_table(bs=None):
+    
+    
     TABLE1_ID = "wikitable"
     
     if bs is None:
