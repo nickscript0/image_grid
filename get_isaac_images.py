@@ -11,7 +11,7 @@ import BeautifulSoup
 BASE_URL = 'http://bindingofisaacrebirth.gamepedia.com'
 MAIN_DIV_ID = "mw-content-text"
 
-RESOURCE_PATH = 'dev/isaac_grid/res'
+RESOURCE_PATH = 'res'
 DESCRIPTIONS_FILE = 'descriptions.json'
 
 
@@ -87,7 +87,7 @@ class Desc(object):
 
     def write(self):
         """ Writes the current JSON back to file. """
-        open(self.path, 'w').write(json.dumps(self.current))
+        open(self.path, 'w').write(json.dumps(self.current, indent=4, sort_keys=True))
 
 def get_already_saved():
     """
