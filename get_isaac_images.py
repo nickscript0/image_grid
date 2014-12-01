@@ -28,10 +28,10 @@ def save_tables(bs=None):
     i = 1
     try:
         while(current_table != None):
+            debug('Processing table ' + str(i))
             tds = current_table.findAll('td')
             desc_file = Desc()
             save_table(tds, desc_file)
-            debug('Processing table ' + str(i))
             current_table = current_table.findNextSibling('table', attrs={'class': TABLE1_ID})
             i += 1
     finally:
@@ -40,10 +40,14 @@ def save_tables(bs=None):
 def save_table(table_tds, desc_file):
     already_saved = get_already_saved()
     # Loop through each table <td>
+    skip_count = 0
     for td in table_tds:
         image_name = image_name_from_url(td.find('img')['src']).split('.')[0]
         if image_name not in already_saved:
             save_td(td, desc_file)
+        else:
+            skip_count += 1
+    debug('Skipped %s already saved images.' %(skip_count))
         
 def save_td(td, desc_file):
     # Get image
@@ -54,7 +58,7 @@ def save_td(td, desc_file):
     # Get description
     image_name = image_name_from_url(img_url).split('.')[0]
     desc_rel_url = td.find('a')['href'] # Description page url
-    save_description(desc_rel_url, image_name, image_formatted_name, desc_file)
+    save_description(desc_rel_url, image_name, desc_file)
 
 def save_image(img_url):
     path = os.path.join(RESOURCE_PATH, image_name_from_url(img_url))
@@ -106,7 +110,11 @@ def get_description(desc_relative_url):
     span = div1.find('span', attrs={'id': re_effect})
     
     # Find next sibling that is not a span
-    parent_span = span.parent
+    try:
+        parent_span = span.parent
+    except AttributeError:
+        debug('Error: unable to get description')
+        return 'None'
     next_el = parent_span.findNextSibling()
     while(str(next_el.name) == 'span'):
         next_el = parent_span.findNextSibling()
