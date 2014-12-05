@@ -1,21 +1,21 @@
 // Module
 var ig = {};
 
-ig.vm = new function() {
-    var vm = {}
-    vm.init = function() {
+ig.vm = new function () {
+    var vm = {};
+    vm.init = function () {
         vm.description = m.prop("");
         
         // Get items list
         vm.items = m.prop([]);
         m.request({method: "GET", url: "/res/descriptions.json"}).then(vm.itemsToUrls).then(vm.items);
         
-    }
+    };
     
     // Converts the 'items' object to an Array of image urls
-    vm.itemsToUrls = function(items) {       
+    vm.itemsToUrls = function (items) {
         var items_list = [];
-        for(var key in items) {
+        for (var key in items) {
             if (items.hasOwnProperty(key)) {
                 // Escape % by appending '25', due to how python SimpleHTTPServer serves files
                 key = key.split('%').join('%25');
@@ -43,10 +43,11 @@ ig.view = function() {
         m("body", [
             m("div", [
                 ig.vm.items().map(function (item, index){
-                return m("img", {src: item})
+                    return m("img", {src: item, 
+                                     style: {height: '50px'} })
                 })
             ]),
-            m("div", "Item Count: " + ig.vm.items().length)
+            m("div", "Item Count: " + ig.vm.items().length),
         ])
     ]);
 };
