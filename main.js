@@ -8,8 +8,21 @@ ig.vm = new function() {
         
         // Get items list
         vm.items = m.prop([]);
-        m.request({method: "GET", url: "/res/descriptions.json"}).then(vm.items);
+        m.request({method: "GET", url: "/res/descriptions.json"}).then(vm.itemsToUrls).then(vm.items);
         
+    }
+    
+    // Converts the 'items' object to an Array of image urls
+    vm.itemsToUrls = function(items) {       
+        var items_list = [];
+        for(var key in items) {
+            if (items.hasOwnProperty(key)) {
+                // Escape % by appending '25', due to how python SimpleHTTPServer serves files
+                key = key.split('%').join('%25');
+                items_list.push( '/res/'+key+'.png' );
+            }
+        } 
+        return items_list;
     }
     
     vm.test = function(a) {
@@ -26,19 +39,14 @@ ig.controller = function() {
 
 // View
 ig.view = function() {
-    // Generate items grid
-    items_obj = ig.vm.items();
-    var items_list = [];
-    for(var key in items_obj) {
-        if (items_obj.hasOwnProperty(key)) {
-            items_list.push( m("img", {src: '/res/'+key+'.png'}) );
-        }
-    }
-    
     return m("html", [
         m("body", [
-            m("div", items_list),
-            m("div", "Item Count: " + items_list.length)
+            m("div", [
+                ig.vm.items().map(function (item, index){
+                return m("img", {src: item})
+                })
+            ]),
+            m("div", "Item Count: " + ig.vm.items().length)
         ])
     ]);
 };

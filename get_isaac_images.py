@@ -87,7 +87,7 @@ class Desc(object):
 
     def write(self):
         """ Writes the current JSON back to file. """
-        open(self.path, 'w').write(json.dumps(self.current, indent=4, sort_keys=True))
+        open(self.path, 'w').write(json.dumps(self.current, indent=4))
 
 def get_already_saved():
     """
