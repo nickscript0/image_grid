@@ -43,14 +43,18 @@ ig.view = function() {
         m("body", [
             m("div", [
                 ig.vm.items().map(function (item, index){
-                    return m("img", {src: item, 
-                                     style: {height: '50px'} })
+                    return m("div.item_block", [
+                        m("img.wikitable", {src: item})
+                                     //style: {height: '50px'} })
+                    ])
                 })
             ]),
-            m("div", "Item Count: " + ig.vm.items().length),
+            m("a.tooltips", "Item Count: " + ig.vm.items().length, [
+                m("span", "Tooltip text goes here!")
+            ])
         ])
     ]);
 };
 
 //initialize the application
-m.module(document, {controller: ig.controller, view: ig.view});
+m.module(document.getElementById("mithril_app"), {controller: ig.controller, view: ig.view});
