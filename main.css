@@ -41,12 +41,16 @@ body {
     padding: 0;
 }
 .thumb > div {
-    width: 400px;
-    /* This pane exists to register the hover, but remains
+    
+    /* This div exists to register the hover, but remains
      * transparent so we can move the thumb down and to the right 
      * in a child node
      */
     background-color: rgba(0, 0, 0, 0);
+    
+/*    height: 50px;*/
+/*    width: 50px;*/
+    
     opacity: 0;
     position: absolute;
     top: 0;
@@ -62,11 +66,13 @@ body {
     
 }
 .thumb > div div {
+    /* This is the div that holds the visible thumbnail */
     padding: 20px 40px;
     background-color: rgba(0,0,0,0.75);    
     position: relative;
     top: 57px;
     left: 57px;
+    width: 400px;
 }
 
 .thumb h2 {
