@@ -72,7 +72,11 @@ body {
     position: relative;
     top: 57px;
     left: 57px;
-    width: 400px;
+    width: 250px;
+    
+/*    display: inline;*/
+/*    margin-left: auto;*/
+/*    margin-right: auto;*/
 }
 
 .thumb h2 {

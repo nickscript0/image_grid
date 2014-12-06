@@ -8,6 +8,7 @@ import os
 import os.path
 import re
 import json
+import collections
 
 import BeautifulSoup
 
@@ -51,13 +52,13 @@ def save_table(table_tds, desc_file):
         if (MAX_IMAGES and (i > MAX_IMAGES)):
             debug("Stopped at MAX_IMAGES: "+str(i))
             return
-        image_name = image_name_from_url(td.find('img')['src']).split('.')[0]
+        image_name = image_name_from_url(td.find('img')['src'])
         if image_name not in already_saved:
             save_td(td, desc_file)
         else:
             skip_count += 1
     debug('Skipped %s already saved images.' %(skip_count))
-        
+    
 def save_td(td, desc_file):
     # Get image
     img = td.find('img')
@@ -65,7 +66,7 @@ def save_td(td, desc_file):
     save_image(img_url, desc_file.base_path)
     
     # Get description
-    image_name = image_name_from_url(img_url).split('.')[0]
+    image_name = image_name_from_url(img_url)
     desc_rel_url = td.find('a')['href'] # Description page url
     save_description(desc_rel_url, image_name, desc_file)
 
@@ -75,8 +76,8 @@ def save_image(img_url, base_path):
     debug('Saved '+path)
     
 def save_description(desc_relative_url, image_name, desc_file):
-    name, description = get_description(desc_relative_url)
-    desc_file.current[image_name] = {'name': name, 'description': description}
+    item_name, description = get_description(desc_relative_url)
+    desc_file.current[image_name] = {'name': item_name, 'description': description}
 
 ### Helpers
 class Desc(object):
@@ -90,10 +91,11 @@ class Desc(object):
         self.path = os.path.join(self.base_path, RESOURCE_PATH, DESCRIPTIONS_FILE)
         
         try:
-            self.current = json.loads(open(self.path).read())
+            self.current = json.loads(open(self.path).read(),
+                                      object_pairs_hook=collections.OrderedDict)
         except IOError:
             # File doesn't exist yet
-            self.current = {}
+            self.current = collections.OrderedDict() # {}
 
     def write(self):
         """ Writes the current JSON back to file. """
@@ -104,7 +106,8 @@ def get_already_saved(base_path):
     Returns a set of img names already saved to disk.
     """
     files = os.listdir(os.path.join(base_path, RESOURCE_PATH))
-    unique_names = set([x.split('.')[0] for x in files if x.find('.') != -1])
+    # Filter items with a dot (files)
+    unique_names = set([x for x in files if x.find('.') != -1])
     return unique_names    
     
 def get_description(desc_relative_url):
@@ -128,12 +131,12 @@ def get_description(desc_relative_url):
     # Find next sibling that is not a span
     try:
         parent_span = span.parent
+        next_el = parent_span.findNextSibling()
+        while(str(next_el.name) == 'span'):
+            next_el = parent_span.findNextSibling()
     except AttributeError:
         debug('Error: unable to get description')
-        return 'None'
-    next_el = parent_span.findNextSibling()
-    while(str(next_el.name) == 'span'):
-        next_el = parent_span.findNextSibling()
+        next_el = BeautifulSoup.BeautifulSoup('None')
         
     # Remove any script tags
     res = remove_tags('script', next_el)

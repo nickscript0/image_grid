@@ -21,7 +21,7 @@ ig.vm = new function () {
             if (items.hasOwnProperty(key)) {
                 // Escape % by appending '25', due to how python SimpleHTTPServer serves files
                 escaped_key = key.split('%').join('%25');
-                items_list.push( {image_url: '/res/'+escaped_key+'.png', 
+                items_list.push( {image_url: '/res/'+escaped_key, 
                                   description: items[key].description,
                                   name: items[key].name} );
             }
@@ -36,6 +36,7 @@ ig.vm = new function () {
             m("div", [
                 m("div.thumb_pane", [
                     m("h2", item.name),
+                    // The descriptions are html, trusting scripts have been removed
                     m("p", m.trust(item.description))
                 ])
             ])
@@ -56,10 +57,12 @@ ig.view = function() {
         m("body", [
             m("div", [
                 ig.vm.items().map(function (item, index){
-                    // TODO: if we want a nice uniform grid look, we should use a table with overflow set
+                    // TODO: if we want a nice uniform grid look with no vertical spacing
+                    // we should use a table with overflow set
                     return ig.vm.buildHover(item)
                 })
-            ]) 
+            ]),
+            m("div", "Item Count: " + ig.vm.items().length)
         ])
     ]);
 };
