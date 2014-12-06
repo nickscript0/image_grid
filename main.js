@@ -45,7 +45,7 @@ ig.vm = new function () {
     
     return vm
 }
-// Rich
+
 // Controller
 ig.controller = function() {
     ig.vm.init()
