@@ -1,3 +1,7 @@
+# Scrapes images and descriptions from BOI wiki
+#
+# Debug: reload(gi); gi.save_tables(base_path=path)
+
 import urllib2
 import urllib
 import os
@@ -14,9 +18,9 @@ MAIN_DIV_ID = "mw-content-text"
 RESOURCE_PATH = 'res'
 DESCRIPTIONS_FILE = 'descriptions.json'
 
-
+MAX_IMAGES = None # Debugging max number of images to process
         
-def save_tables(bs=None):
+def save_tables(base_path='', bs=None):
     TABLE1_ID = "wikitable"
     
     if bs is None:
@@ -25,12 +29,12 @@ def save_tables(bs=None):
     # Loop through all wikitables on page
     div1 = bs.find('div', attrs={'id': MAIN_DIV_ID})
     current_table = div1.findNext('table', attrs={'class': TABLE1_ID})
+    desc_file = Desc(base_path)
     i = 1
     try:
         while(current_table != None):
             debug('Processing table ' + str(i))
             tds = current_table.findAll('td')
-            desc_file = Desc()
             save_table(tds, desc_file)
             current_table = current_table.findNextSibling('table', attrs={'class': TABLE1_ID})
             i += 1
@@ -38,10 +42,15 @@ def save_tables(bs=None):
         desc_file.write()
     
 def save_table(table_tds, desc_file):
-    already_saved = get_already_saved()
+    already_saved = get_already_saved(desc_file.base_path)
     # Loop through each table <td>
     skip_count = 0
+    i = 0
     for td in table_tds:
+        i += 1
+        if (MAX_IMAGES and (i > MAX_IMAGES)):
+            debug("Stopped at MAX_IMAGES: "+str(i))
+            return
         image_name = image_name_from_url(td.find('img')['src']).split('.')[0]
         if image_name not in already_saved:
             save_td(td, desc_file)
@@ -53,22 +62,21 @@ def save_td(td, desc_file):
     # Get image
     img = td.find('img')
     img_url = img['src']
-    save_image(img_url)
+    save_image(img_url, desc_file.base_path)
     
     # Get description
     image_name = image_name_from_url(img_url).split('.')[0]
     desc_rel_url = td.find('a')['href'] # Description page url
     save_description(desc_rel_url, image_name, desc_file)
 
-def save_image(img_url):
-    path = os.path.join(RESOURCE_PATH, image_name_from_url(img_url))
+def save_image(img_url, base_path):
+    path = os.path.join(base_path, RESOURCE_PATH, image_name_from_url(img_url))
     urllib.urlretrieve(img_url, path)
     debug('Saved '+path)
     
 def save_description(desc_relative_url, image_name, desc_file):
-    #path = os.path.join(RESOURCE_PATH, name)
-    #open(path, 'w').write(get_description(desc_relative_url))
-    desc_file.current[image_name] = {'description': get_description(desc_relative_url)}
+    name, description = get_description(desc_relative_url)
+    desc_file.current[image_name] = {'name': name, 'description': description}
 
 ### Helpers
 class Desc(object):
@@ -76,9 +84,11 @@ class Desc(object):
     Loads the pre-existing description JSON from file, allowing app
     to write to it, then write it back to file.
     """
-    path = os.path.join(RESOURCE_PATH, DESCRIPTIONS_FILE)
-    
-    def __init__(self):
+      
+    def __init__(self, base_path=''):
+        self.base_path = base_path
+        self.path = os.path.join(self.base_path, RESOURCE_PATH, DESCRIPTIONS_FILE)
+        
         try:
             self.current = json.loads(open(self.path).read())
         except IOError:
@@ -89,20 +99,26 @@ class Desc(object):
         """ Writes the current JSON back to file. """
         open(self.path, 'w').write(json.dumps(self.current, indent=4))
 
-def get_already_saved():
+def get_already_saved(base_path):
     """
     Returns a set of img names already saved to disk.
     """
-    files = os.listdir(RESOURCE_PATH)
+    files = os.listdir(os.path.join(base_path, RESOURCE_PATH))
     unique_names = set([x.split('.')[0] for x in files if x.find('.') != -1])
     return unique_names    
     
 def get_description(desc_relative_url):
     """
-    Give a rel url of an item page e.g. '/SomeName' return the description of the page
+    Give a rel url of an item page e.g. '/SomeName' 
+    return (name, description)
     """
     bs = bs_from_url(BASE_URL+desc_relative_url)
     
+    ## Find image title
+    # Location: <span itemprop="name">
+    item_name = bs.find('span', attrs={'itemprop': 'name'}).text
+    
+    ## Find image description
     # Location: The next sibling of the <h2> parent of <span id="Effect|Effects"> in MAIN_DIV
     div1 = bs.find('div', attrs={'id': MAIN_DIV_ID})
 
@@ -118,7 +134,26 @@ def get_description(desc_relative_url):
     next_el = parent_span.findNextSibling()
     while(str(next_el.name) == 'span'):
         next_el = parent_span.findNextSibling()
-    return next_el.text
+        
+    # Remove any script tags
+    res = remove_tags('script', next_el)
+    # Convert <a> tags to text
+    # but return html instead of text to preserve formatting in the output
+    return (item_name, str(tags_to_text('a', res)))
+
+def tags_to_text(tag_name, html):
+    """ Replaces any <tag_name> tags in html, with the plaintext equivalent. """
+    tags = html.findAll(tag_name)
+    for t in tags:
+        t.replaceWith(t.text)
+    return html
+
+def remove_tags(tag_name, html):
+    """ Removes any <tag_name> tags from html. """
+    tags = html.findAll(tag_name)
+    for t in tags:
+        t.replaceWith('')
+    return html
     
 def bs_from_url(url):
     """

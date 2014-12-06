@@ -1,3 +1,4 @@
 /res
+/res_bak
 *.pyc
 .DS_Store

@@ -23,7 +23,7 @@ ig.vm = new function () {
                 escaped_key = key.split('%').join('%25');
                 items_list.push( {image_url: '/res/'+escaped_key+'.png', 
                                   description: items[key].description,
-                                  name: key} );
+                                  name: items[key].name} );
             }
         } 
         return items_list;
@@ -36,7 +36,7 @@ ig.vm = new function () {
             m("div", [
                 m("div.thumb_pane", [
                     m("h2", item.name),
-                    m("p", item.description)
+                    m("p", m.trust(item.description))
                 ])
             ])
         ])
