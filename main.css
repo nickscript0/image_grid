@@ -22,47 +22,55 @@ img.wikitable {
     max-height:100%;
 }
 
-
+/*
 div {
     font-family: "Roboto Condensed",Helvetica,sans-serif;
     font-size: 30px;
 }
+*/
 
-/* tool tip */
-a.tooltips {
-  position: relative;
-  display: inline;
-}
-a.tooltips span {
-  position: absolute;
-  width:140px;
-  color: #FFFFFF;
-  background: #000000;
-  height: 30px;
-  line-height: 30px;
-  text-align: center;
-  visibility: hidden;
-  border-radius: 6px;
-}
-a.tooltips span:after {
-  content: '';
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  margin-left: -8px;
-  width: 0; height: 0;
-  border-top: 8px solid #000000;
-  border-right: 8px solid transparent;
-  border-left: 8px solid transparent;
-}
-a:hover.tooltips span {
-  visibility: visible;
-  opacity: 0.7;
-  bottom: 30px;
-  left: 50%;
-  margin-left: -76px;
-  z-index: 999;
+/* hover css */
+body {
+    font-family: Arial, Helvetica, sans-serif;
 }
 
+.thumb {
+    position: relative;
 
+/*    overflow: hidden;*/
+}
+.thumb img {
+/*    width: 100%;*/
+    padding: 0;
+}
+.thumb > div {
+/*    width: 500px;*/
+/*    height: 335px;*/
+/*    width: 100%;*/
+/*    height: 100%;*/
 
+    background-color: rgba(0,0,0,0.75);
+    opacity: 0;
+    position: absolute;
+/*    top: 0;*/
+/*    left: 0;*/
+    -webkit-transition: opacity 0.3s linear;
+    text-shadow: #000 1px 1px 0;
+    color: #ccc;
+}
+.thumb:hover > div {
+    display: block;
+    opacity: 1.0;
+}
+.thumb > div div {
+    padding: 20px 40px;
+}
+.thumb h2 {
+    font-size: 1.2em;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+}
+.thumb p {
+    margin-bottom: 10px;
+}

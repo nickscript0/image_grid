@@ -24,11 +24,7 @@ ig.vm = new function () {
         } 
         return items_list;
     }
-    
-    vm.test = function(a) {
-        console.log("Items.length " + a.length);
-    }
-    
+
     return vm
 }
 
@@ -50,9 +46,16 @@ ig.view = function() {
                     ])
                 })
             ]),
-            m("a.tooltips", "Item Count: " + ig.vm.items().length, [
-                m("span", "Tooltip text goes here!")
+            m("div.thumb", [
+                m("img", {src: '/res/Thunder_Thighs_Icon.png', style: {height: '50px'}}),
+                m("div", [
+                    m("div", [
+                        m("h2", "h2 title"),
+                        m("p", "p text here")
+                    ])
+                ])
             ])
+                
         ])
     ]);
 };
