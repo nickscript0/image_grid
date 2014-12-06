@@ -3,6 +3,8 @@ var ig = {};
 
 ig.vm = new function () {
     var vm = {};
+    
+    // Init called by controller
     vm.init = function () {
         vm.description = m.prop("");
         
@@ -18,13 +20,28 @@ ig.vm = new function () {
         for (var key in items) {
             if (items.hasOwnProperty(key)) {
                 // Escape % by appending '25', due to how python SimpleHTTPServer serves files
-                key = key.split('%').join('%25');
-                items_list.push( '/res/'+key+'.png' );
+                escaped_key = key.split('%').join('%25');
+                items_list.push( {image_url: '/res/'+escaped_key+'.png', 
+                                  description: items[key].description,
+                                  name: key} );
             }
         } 
         return items_list;
     }
 
+    // Builds a hover text block
+    vm.buildHover = function (item) {
+        return m("div.thumb.item_block", [
+            m("img.wikitable", {src: item.image_url}),
+            m("div", [
+                m("div", [
+                    m("h2", item.name),
+                    m("p", item.description)
+                ])
+            ])
+        ])
+    }
+    
     return vm
 }
 
@@ -40,22 +57,9 @@ ig.view = function() {
             m("div", [
                 ig.vm.items().map(function (item, index){
                     // TODO: if we want a nice uniform grid look, we should use a table with overflow set
-                    return m("div.item_block", [
-                        m("img.wikitable", {src: item})
-                                     //style: {height: '50px'} })
-                    ])
+                    return ig.vm.buildHover(item)
                 })
-            ]),
-            m("div.thumb", [
-                m("img", {src: '/res/Thunder_Thighs_Icon.png', style: {height: '50px'}}),
-                m("div", [
-                    m("div", [
-                        m("h2", "h2 title"),
-                        m("p", "p text here")
-                    ])
-                ])
-            ])
-                
+            ]) 
         ])
     ]);
 };

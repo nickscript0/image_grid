@@ -44,7 +44,7 @@ body {
     padding: 0;
 }
 .thumb > div {
-/*    width: 500px;*/
+    width: 350px;
 /*    height: 335px;*/
 /*    width: 100%;*/
 /*    height: 100%;*/
@@ -52,11 +52,12 @@ body {
     background-color: rgba(0,0,0,0.75);
     opacity: 0;
     position: absolute;
-/*    top: 0;*/
-/*    left: 0;*/
+/*    top: 50px;*/
+/*    left: 50px;*/
     -webkit-transition: opacity 0.3s linear;
     text-shadow: #000 1px 1px 0;
     color: #ccc;
+    z-index: 50;
 }
 .thumb:hover > div {
     display: block;
