@@ -52,16 +52,18 @@ body {
     background-color: rgba(0,0,0,0.75);
     opacity: 0;
     position: absolute;
-/*    top: 50px;*/
-/*    left: 50px;*/
+    top: 0;
+    left: 0;    
     -webkit-transition: opacity 0.3s linear;
     text-shadow: #000 1px 1px 0;
     color: #ccc;
     z-index: 50;
+/*    -webkit-transform: translate(50px,50px);*/
 }
 .thumb:hover > div {
     display: block;
     opacity: 1.0;
+    
 }
 .thumb > div div {
     padding: 20px 40px;
