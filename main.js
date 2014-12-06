@@ -1,13 +1,13 @@
 // Module
 var ig = {};
 
+
+// Models
 ig.vm = new function () {
     var vm = {};
     
     // Init called by controller
     vm.init = function () {
-        vm.description = m.prop("");
-        
         // Get items list
         vm.items = m.prop([]);
         m.request({method: "GET", url: "/res/descriptions.json"}).then(vm.itemsToUrls).then(vm.items);
@@ -45,7 +45,7 @@ ig.vm = new function () {
     
     return vm
 }
-
+// Rich
 // Controller
 ig.controller = function() {
     ig.vm.init()
