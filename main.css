@@ -1,12 +1,27 @@
+body {
+    background-color: #d9c9c3;
+
+}
+
 .item_block {
-    border: 1px solid green;
+    border: 1px solid grey;
     height: 50px;
     width: 50px;
     display: inline-block;
+    
     margin-left: 3px;
     margin-right: 3px;
-
+    padding: 3px;
+    background-color: rgba(118, 103, 103, 0.64);  
 }
+
+img.wikitable {        
+    display: block;
+    width:100%;
+    height:auto;
+    max-height:100%;
+}
+
 
 div {
     font-family: "Roboto Condensed",Helvetica,sans-serif;
@@ -51,19 +66,3 @@ a:hover.tooltips span {
 
 
 
-img.wikitable {
-/*    margin: 1em 0;*/
-/*    margin-left: 1px;*/
-/*    margin-right: 1px;*/
-/*    padding: 5px;*/
-/*    background-color: #72551d;*/
-/*    border: 1px grey solid;*/
-/*    border-collapse: collapse;*/
-    
-/*    background-color: rgba(0,0,0,0.3);*/
-    
-    display: block;
-    width:100%;
-    height:auto;
-    max-height:100%;
-}

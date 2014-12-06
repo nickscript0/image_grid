@@ -43,6 +43,7 @@ ig.view = function() {
         m("body", [
             m("div", [
                 ig.vm.items().map(function (item, index){
+                    // TODO: if we want a nice uniform grid look, we should use a table with overflow set
                     return m("div.item_block", [
                         m("img.wikitable", {src: item})
                                      //style: {height: '50px'} })
