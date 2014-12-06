@@ -34,7 +34,7 @@ ig.vm = new function () {
         return m("div.thumb.item_block", [
             m("img.wikitable", {src: item.image_url}),
             m("div", [
-                m("div", [
+                m("div.thumb_pane", [
                     m("h2", item.name),
                     m("p", item.description)
                 ])
@@ -65,4 +65,4 @@ ig.view = function() {
 };
 
 //initialize the application
-m.module(document.getElementById("mithril_app"), {controller: ig.controller, view: ig.view});
+m.module(document.getElementById("ig_app"), {controller: ig.controller, view: ig.view});

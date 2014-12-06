@@ -1,6 +1,6 @@
 body {
     background-color: #d9c9c3;
-
+    font-family: "Roboto Condensed",Helvetica,sans-serif;
 }
 
 .item_block {
@@ -15,19 +15,17 @@ body {
     background-color: rgba(118, 103, 103, 0.64);  
 }
 
+.item_block:hover {
+    border: 2px solid black;
+    padding: 2px;
+}
+
 img.wikitable {        
     display: block;
     width:100%;
     height:auto;
     max-height:100%;
 }
-
-/*
-div {
-    font-family: "Roboto Condensed",Helvetica,sans-serif;
-    font-size: 30px;
-}
-*/
 
 /* hover css */
 body {
@@ -36,7 +34,6 @@ body {
 
 .thumb {
     position: relative;
-
 /*    overflow: hidden;*/
 }
 .thumb img {
@@ -44,21 +41,20 @@ body {
     padding: 0;
 }
 .thumb > div {
-    width: 350px;
-/*    height: 335px;*/
-/*    width: 100%;*/
-/*    height: 100%;*/
-
-    background-color: rgba(0,0,0,0.75);
+    width: 400px;
+    /* This pane exists to register the hover, but remains
+     * transparent so we can move the thumb down and to the right 
+     * in a child node
+     */
+    background-color: rgba(0, 0, 0, 0);
     opacity: 0;
     position: absolute;
     top: 0;
     left: 0;    
-    -webkit-transition: opacity 0.3s linear;
+    -webkit-transition: opacity 0.2s linear;
     text-shadow: #000 1px 1px 0;
     color: #ccc;
     z-index: 50;
-/*    -webkit-transform: translate(50px,50px);*/
 }
 .thumb:hover > div {
     display: block;
@@ -67,12 +63,18 @@ body {
 }
 .thumb > div div {
     padding: 20px 40px;
+    background-color: rgba(0,0,0,0.75);    
+    position: relative;
+    top: 57px;
+    left: 57px;
 }
+
 .thumb h2 {
     font-size: 1.2em;
     letter-spacing: 0.2em;
-    text-transform: uppercase;
+/*    text-transform: uppercase;*/
     margin-bottom: 10px;
+    
 }
 .thumb p {
     margin-bottom: 10px;
