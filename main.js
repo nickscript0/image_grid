@@ -31,17 +31,32 @@ ig.vm = new function () {
 
     // Builds a hover text block
     vm.buildHover = function (item) {
+     
         return m("div.thumb.item_block", [
-            m("img.wikitable", {src: item.image_url}),
-            m("div", [
-                m("div.thumb_pane", [
-                    m("h2", item.name),
-                    // The descriptions are html, trusting scripts have been removed
-                    m("p", m.trust(item.description))
-                ])
-            ])
+            m("img.wikitable", {config: ig.vm.addTooltip, src: item.image_url}),
+//            m("div.config_arg", item.description)
+//            m("div", [
+//                m("div.thumb_pane", [
+//                    m("h2", item.name),
+//                    // The descriptions are html, trusting scripts have been removed
+//                    m("p", m.trust(item.description))
+//                ])
+//            ])
         ])
     }
+    
+    vm.addTooltip = function (element, isInitialized, context) {
+        if (isInitialized) return;
+//        var desc = element.childNodes[1].innerHTML;
+//        element.childNodes[1].innerHTML = '';
+        desc = '<b>Does</b> this work?';
+        var myOpentip = new Opentip(element, desc, {showOn: 'mouseover',
+//                                                     style: 'alert',
+                                                     tipJoint: "top",
+//                                                     target: true,
+//                                                     fixed: 'true'
+                                                              });            
+    };
     
     return vm
 }
