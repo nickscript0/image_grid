@@ -65,6 +65,7 @@ ig.controller = function() {
 ig.view = function() {
     return m("html", [
         m("body", [
+            ig.search_view(),
             m("div", [
                 ig.vm.items().list().map(function (item, index){
                     // TODO: if we want a nice uniform grid look with no vertical spacing
@@ -76,6 +77,20 @@ ig.view = function() {
         ])
     ]);
 };
+
+// search
+ig.search_view = function() {
+    return m("div", {style: {border: "1px solid grey", margin: "3px", 
+                             paddingBottom: "5px", paddingTop: "5px",
+                            "text-align": "center"}}, [
+        m("div.abc", {style: {margin: "0 auto", display: "inline-block"}}, [
+            m("div", {style: {display: "inline-block", paddingRight: "10px"}}, "Search"),
+            m("input", {style: {border: "1px solid black", "background-color": "#eadede"},
+                        size: 100,
+                        oninput: m.withAttr("value", "ctrl.searchTerm")})
+        ])
+    ])
+}
 
 // Builds a hover text block
 ig.hover = function (item) {   
