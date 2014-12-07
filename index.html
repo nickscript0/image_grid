@@ -8,22 +8,11 @@
     </head>
     <body>
         
-        <img id="tt" src="res/My_Reflection_Icon.png"></img>
-        
         <div id="ig_app"></div>
     
         
         <script src="src/opentip-native.js"></script><!-- Change to the adapter you actually use -->
         <script src="//cdn.jsdelivr.net/mithril/0.1.26/mithril.min.js"></script>
         <script src="main.js"></script>
-        
-        <script>
-            var d = document.getElementById("tt");
-            myOpentip = new Opentip(d, "Hi there!", {showOn: 'mouseover',
-                                                     style: 'alert',
-                                                     tipJoint: "bottom",
-                                                     target: d,
-                                                     fixed: 'true'});
-        </script>
     </body>
 </html>

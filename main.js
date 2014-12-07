@@ -35,7 +35,7 @@ ig.vm = new function () {
 
     // Builds a hover text block
     vm.buildHover = function (item) {   
-        return m("div.thumb.item_block", [
+        return m("div.item_block", [
             m("img.wikitable", {config: ig.vm.addTooltip, src: item.image_url,
                                alt: item.name}),
         ])
@@ -43,17 +43,15 @@ ig.vm = new function () {
     
     vm.addTooltip = function (element, isInitialized, context) {
         if (isInitialized) return;
-//        var desc = element.childNodes[1].innerHTML;
-//        element.childNodes[1].innerHTML = '';
         var name = element.alt; // img.alt
         var desc = ig.vm.items_map()[element.alt];
-        // desc = '<b>Does</b> this work?';
-        var myOpentip = new Opentip(element, desc, {showOn: 'mouseover',
-//                                                     style: 'alert',
-                                                     tipJoint: "top",
-//                                                     target: true,
-//                                                     fixed: 'true'
-                                                              });            
+        var text = '<h3>'+name+'</h3>'+desc;
+
+        var myOpentip = new Opentip(element, text, {
+            style: "dark", // Others: alert, dark, glass, drop
+            showOn: 'mouseover',
+            tipJoint: "top"
+        });            
     };
     
     return vm
