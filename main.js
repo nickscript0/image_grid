@@ -5,7 +5,7 @@ var ig = {};
 // Models
 ig.items = function (items_json) {
     // List of {image_url, description, name} objects
-    this.list = m.prop([]);
+    this.ordered_names = m.prop([]);
     // Map of key=name, value=description
     this.dict = m.prop({});
     
@@ -13,20 +13,38 @@ ig.items = function (items_json) {
         if (items_json.hasOwnProperty(key)) {
             // Escape % by appending '25', due to how python SimpleHTTPServer serves files
             escaped_key = key.split('%').join('%25');
-            this.list().push( {image_url: '/res/'+escaped_key, 
-                              description: items_json[key].description,
-                              name: items_json[key].name} );
-            this.dict()[items_json[key].name] = items_json[key].description;
+            this.ordered_names().push(items_json[key].name);
+            this.dict()[items_json[key].name] = {image_url: '/res/'+escaped_key, 
+                                                 description: items_json[key].description,
+                                                 name: items_json[key].name,
+                                                 selected: false // true when matching search term
+                                                };
         }
     }   
 };
+
+ig.search = function (dict) {
+    this.dict = dict;
+    
+    this.find = function (term) {
+        var matches = [];
+        for (var key in dict) {
+            if (items_json.hasOwnProperty(key)) {
+                if (key.search(term) > -1) {
+                    matches.push(key);
+                }
+            }
+        }
+       
+    };
+}
 
 // This is not a standalone model as it references ig.vm.items, it is a vm helper
 // TODO: could be refactored using a closure/currying and accept the items.dict as the first arg.
 ig.addTooltip = function (element, isInitialized, context) {
     if (isInitialized) return;
     var name = element.alt; // img.alt
-    var desc = ig.vm.items().dict()[element.alt];
+    var desc = ig.vm.items().dict()[element.alt].description;
     var text = '<h3>'+name+'</h3>'+desc;
 
     var myOpentip = new Opentip(element, text, {
@@ -42,6 +60,8 @@ ig.vm = new function () {
     
     // ig.items
     vm.items = m.prop({});
+    
+    vm.search_text = m.prop();
     
     // Init called by controller
     vm.init = function () {
@@ -67,13 +87,13 @@ ig.view = function() {
         m("body", [
             ig.search_view(),
             m("div", [
-                ig.vm.items().list().map(function (item, index){
+                ig.vm.items().ordered_names().map(function (name, index){
                     // TODO: if we want a nice uniform grid look with no vertical spacing
                     // we should use a table with overflow set
-                    return ig.hover(item)
+                    return ig.image_view(ig.vm.items().dict()[name])
                 })
             ]),
-            m("div", "Item Count: " + ig.vm.items().list().length)
+            m("div", "Item Count: " + ig.vm.items().ordered_names().length)
         ])
     ]);
 };
@@ -87,16 +107,22 @@ ig.search_view = function() {
             m("div", {style: {display: "inline-block", paddingRight: "10px"}}, "Search"),
             m("input", {style: {border: "1px solid black", "background-color": "#eadede"},
                         size: 100,
-                        oninput: m.withAttr("value", "ctrl.searchTerm")})
+                        onchange: m.withAttr("value", ig.vm.search_text)})
         ])
     ])
 }
 
-// Builds a hover text block
-ig.hover = function (item) {   
-    return m("div.item_block", [
+// Builds an image block
+ig.image_view = function (item) {   
+    return m("div.item_block", {style: {border: function () {
+                                if (item.selected) 
+                                    return "2px solid blue"; 
+                                else 
+                                    return "";
+    }() }}, [
         m("img.wikitable", {config: ig.addTooltip, src: item.image_url,
-                           alt: item.name}),
+                            alt: item.name
+                           }),
     ])
 }
 
