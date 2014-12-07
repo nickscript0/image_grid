@@ -6,6 +6,9 @@ var ig = {};
 ig.vm = new function () {
     var vm = {};
     
+    // key: name, description
+    vm.items_map = m.prop({});
+    
     // Init called by controller
     vm.init = function () {
         // Get items list
@@ -24,24 +27,17 @@ ig.vm = new function () {
                 items_list.push( {image_url: '/res/'+escaped_key, 
                                   description: items[key].description,
                                   name: items[key].name} );
+                ig.vm.items_map()[items[key].name] = items[key].description;
             }
         } 
         return items_list;
     }
 
     // Builds a hover text block
-    vm.buildHover = function (item) {
-     
+    vm.buildHover = function (item) {   
         return m("div.thumb.item_block", [
-            m("img.wikitable", {config: ig.vm.addTooltip, src: item.image_url}),
-//            m("div.config_arg", item.description)
-//            m("div", [
-//                m("div.thumb_pane", [
-//                    m("h2", item.name),
-//                    // The descriptions are html, trusting scripts have been removed
-//                    m("p", m.trust(item.description))
-//                ])
-//            ])
+            m("img.wikitable", {config: ig.vm.addTooltip, src: item.image_url,
+                               alt: item.name}),
         ])
     }
     
@@ -49,7 +45,9 @@ ig.vm = new function () {
         if (isInitialized) return;
 //        var desc = element.childNodes[1].innerHTML;
 //        element.childNodes[1].innerHTML = '';
-        desc = '<b>Does</b> this work?';
+        var name = element.alt; // img.alt
+        var desc = ig.vm.items_map()[element.alt];
+        // desc = '<b>Does</b> this work?';
         var myOpentip = new Opentip(element, desc, {showOn: 'mouseover',
 //                                                     style: 'alert',
                                                      tipJoint: "top",
