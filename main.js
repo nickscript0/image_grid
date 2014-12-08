@@ -26,16 +26,23 @@ ig.items = function (items_json) {
 ig.search = function (term, dict) {
     var matches = [];
     console.log("Search term: "+term+', term==="" ? '+(term===''));
+    var i = 0;
     for (var key in dict) {
         if (dict.hasOwnProperty(key)) {
-            if (term === '')
+            if (term === '') {
                 dict[key].selected = true;
-            else if (key.search(term) > -1)
+                i += 1;
+            }
+            else if (key.search(term) > -1) {
                 dict[key].selected = true;
-            else
+                i += 1;
+            }
+            else {
                 dict[key].selected = false;
+            }
         }
     }
+    console.log(i + ' items visible');
 }
 
 // This is not a standalone model as it references ig.vm.items, it is a vm helper
@@ -116,16 +123,14 @@ ig.search_view = function() {
 
 // Builds an image block
 ig.image_view = function (item) {   
-    return m("div.item_block", {style: {display: function () {
-                                if (item.selected) 
-                                    return "block-inline";
-                                else 
-                                    return "none";
+    var i = m("div.item_block", {style: {display: function () {
+        return item.selected ? "block-inline": "none";
     }() }}, [
         m("img.wikitable", {config: ig.addTooltip, src: item.image_url,
                             alt: item.name
                            }),
-    ])
+    ]);
+    return i;
 }
 
 //initialize the application
