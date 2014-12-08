@@ -17,26 +17,25 @@ ig.items = function (items_json) {
             this.dict()[items_json[key].name] = {image_url: '/res/'+escaped_key, 
                                                  description: items_json[key].description,
                                                  name: items_json[key].name,
-                                                 selected: false // true when matching search term
+                                                 selected: true // true when matching search term
                                                 };
         }
     }   
 };
 
-ig.search = function (dict) {
-    this.dict = dict;
-    
-    this.find = function (term) {
-        var matches = [];
-        for (var key in dict) {
-            if (items_json.hasOwnProperty(key)) {
-                if (key.search(term) > -1) {
-                    matches.push(key);
-                }
-            }
+ig.search = function (term, dict) {
+    var matches = [];
+    console.log("Search term: "+term+', term==="" ? '+(term===''));
+    for (var key in dict) {
+        if (dict.hasOwnProperty(key)) {
+            if (term === '')
+                dict[key].selected = true;
+            else if (key.search(term) > -1)
+                dict[key].selected = true;
+            else
+                dict[key].selected = false;
         }
-       
-    };
+    }
 }
 
 // This is not a standalone model as it references ig.vm.items, it is a vm helper
@@ -70,9 +69,12 @@ ig.vm = new function () {
         
         m.request({method: "GET", url: "/res/descriptions.json"}).then(function (a) {
             vm.items(new ig.items(a))
-        });
-        
+        });   
     };
+    
+    vm.updateSearch = function(term) {
+        ig.search(term, vm.items().dict());
+    }
     return vm
 }
 
@@ -107,18 +109,18 @@ ig.search_view = function() {
             m("div", {style: {display: "inline-block", paddingRight: "10px"}}, "Search"),
             m("input", {style: {border: "1px solid black", "background-color": "#eadede"},
                         size: 100,
-                        onchange: m.withAttr("value", ig.vm.search_text)})
+                        onkeyup: m.withAttr("value", ig.vm.updateSearch)})
         ])
     ])
 }
 
 // Builds an image block
 ig.image_view = function (item) {   
-    return m("div.item_block", {style: {border: function () {
+    return m("div.item_block", {style: {display: function () {
                                 if (item.selected) 
-                                    return "2px solid blue"; 
+                                    return "block-inline";
                                 else 
-                                    return "";
+                                    return "none";
     }() }}, [
         m("img.wikitable", {config: ig.addTooltip, src: item.image_url,
                             alt: item.name
