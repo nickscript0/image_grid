@@ -26,23 +26,26 @@ ig.items = function (items_json) {
 ig.search = function (term, dict) {
     var matches = [];
     console.log("Search term: "+term+', term==="" ? '+(term===''));
-    var i = 0;
+    var visible_count = 0;
+    term = term.toLowerCase();
+    
     for (var key in dict) {
         if (dict.hasOwnProperty(key)) {
             if (term === '') {
                 dict[key].selected = true;
-                i += 1;
+                visible_count += 1;
             }
-            else if (key.search(term) > -1) {
+            else if (key.toLowerCase().search(term) > -1) {
                 dict[key].selected = true;
-                i += 1;
+                visible_count += 1;
             }
             else {
                 dict[key].selected = false;
             }
         }
     }
-    console.log(i + ' items visible');
+    console.log(visible_count + ' items visible');
+    return visible_count;
 }
 
 // This is not a standalone model as it references ig.vm.items, it is a vm helper
@@ -66,8 +69,7 @@ ig.vm = new function () {
     
     // ig.items
     vm.items = m.prop({});
-    
-    vm.search_text = m.prop();
+    vm.item_count = m.prop();
     
     // Init called by controller
     vm.init = function () {
@@ -75,12 +77,13 @@ ig.vm = new function () {
         vm.items = m.prop({});
         
         m.request({method: "GET", url: "/res/descriptions.json"}).then(function (a) {
-            vm.items(new ig.items(a))
+            vm.items(new ig.items(a));
+            vm.item_count(vm.items().ordered_names.length);
         });   
     };
     
     vm.updateSearch = function(term) {
-        ig.search(term, vm.items().dict());
+        vm.item_count(ig.search(term, vm.items().dict()));
     }
     return vm
 }
@@ -102,7 +105,7 @@ ig.view = function() {
                     return ig.image_view(ig.vm.items().dict()[name])
                 })
             ]),
-            m("div", "Item Count: " + ig.vm.items().ordered_names().length)
+            m("div", "Item Count: " + ig.vm.item_count())
         ])
     ]);
 };
@@ -123,9 +126,11 @@ ig.search_view = function() {
 
 // Builds an image block
 ig.image_view = function (item) {   
-    var i = m("div.item_block", {style: {display: function () {
-        return item.selected ? "block-inline": "none";
-    }() }}, [
+    var i = m("div.item_block", {class: function () {
+        // Changing class here instead of display because for some reason
+        // setting the display: none to hide them, mithril wouldn't show them again
+        return item.selected ? "item_block": "item_block_hidden";
+    }() }, [
         m("img.wikitable", {config: ig.addTooltip, src: item.image_url,
                             alt: item.name
                            }),

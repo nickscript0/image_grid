@@ -21,6 +21,10 @@ body {
     padding: 2px;
 }
 
+.item_block_hidden {
+    display: none;   
+}
+
 img.wikitable {        
     display: block;
     width:100%;
