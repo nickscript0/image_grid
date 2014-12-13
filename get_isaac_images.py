@@ -1,5 +1,10 @@
 # Scrapes images and descriptions from BOI wiki
 #
+# Usage: import get_isaac_images as gi; gi.save_tables()
+#  -- Assumes directory 'RESOURCE_PATH' exists. 
+#  -- Saves the images from the 'Collection_Page' to disk.
+#  -- Saves the names/descriptions in a JSON file.
+
 # Debug: reload(gi); gi.save_tables(base_path=path)
 
 import urllib2
