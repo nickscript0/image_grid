@@ -3,6 +3,23 @@ var ig = {};
 
 
 // Models
+
+// Adds a fly in animation to elements
+ig.aniFlyIn = function(prop, delay){
+    return function(el, b, c){
+        setTimeout(function(){
+            var value = prop()? 1: 0;
+            m.animateProperties(el, {
+                scale: (value * 10) + 1,
+                opacity: 1-value,
+                duration: "0.25s"
+                //duration: "1s"
+            });
+            ig.addTooltip(el,b,c); 
+        }, delay * 50);
+    };
+};
+
 ig.items = function (items_json) {
     // List of {image_url, description, name} objects
     this.ordered_names = m.prop([]);
@@ -95,15 +112,16 @@ ig.controller = function() {
 
 // Views
 ig.view = function() {
-    return m("html", [
-        m("body", [
+    return m("div", [
+        m("div", [
             ig.search_view(),
             m("div", [
                 ig.vm.items().ordered_names().map(function (name, index){
                     // TODO: if we want a nice uniform grid look with no vertical spacing
                     // we should use a table with overflow set
-                    return ig.image_view(ig.vm.items().dict()[name])
+                    return ig.image_view(ig.vm.items().dict()[name], index)
                 })
+                
             ]),
             m("div", "Item Count: " + ig.vm.item_count())
         ])
@@ -125,17 +143,19 @@ ig.search_view = function() {
 }
 
 // Builds an image block
-ig.image_view = function (item) {   
-    var i = m("div.item_block", {class: function () {
+ig.image_view = function (item, i) {   
+    return m("div.item_block", {class: function () {
         // Changing class here instead of display because for some reason
         // setting the display: none to hide them, mithril wouldn't show them again
         return item.selected ? "item_block": "item_block_hidden";
     }() }, [
-        m("img.wikitable", {config: ig.addTooltip, src: item.image_url,
-                            alt: item.name
-                           }),
+        m.e("img.wikitable", {config: function (a,b,c) {
+                                            ig.aniFlyIn(m.prop(0), i)(a,b,c);
+                                            //ig.addTooltip(a,b,c); 
+                                       },
+                              src: item.image_url, alt: item.name,
+                              scale: m.prop(10), opacity: m.prop(0)}),
     ]);
-    return i;
 }
 
 //initialize the application
