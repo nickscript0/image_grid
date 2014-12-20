@@ -11,11 +11,11 @@ ig.aniFlyIn = function(prop, delay){
             m.animateProperties(el, {
                 scale: 1,
                 opacity: 1,
-                duration: "0.25s"
-                //duration: "0.5s"
+                //duration: "0.25s"
+                duration: "1s"
             });
             ig.addTooltip(el,b,c); 
-        }, delay * 100); //, delay * 50);
+        }, delay * 50); //, delay * 50);
     };
 };
 
@@ -161,7 +161,7 @@ ig.image_view = function (item, i) {
             ig.aniFlyIn(m.prop(0), ig.aniDelayFromPosition(a))(a,b,c);
         },
                               src: item.image_url, alt: item.name,
-                              scale: m.prop(5), opacity: m.prop(0)
+                              scale: m.prop(1), opacity: m.prop(0)
                              }),
     ]);
 }
