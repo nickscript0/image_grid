@@ -13,11 +13,19 @@ ig.aniFlyIn = function(prop, delay){
                 scale: (value * 10) + 1,
                 opacity: 1-value,
                 duration: "0.25s"
-                //duration: "1s"
+                //duration: "0.5s"
             });
             ig.addTooltip(el,b,c); 
-        }, delay * 50);
+        }, delay * 100); //, delay * 50);
     };
+};
+
+// Given an image element, calculate an animation delay that would display in
+// a diagonal top left to bottom left reveal
+ig.aniDelayFromPosition = function(elem) {
+    var x_pos = (elem.getBoundingClientRect().left + 210) / 64; // increase by 64
+    var y_pos = (elem.parentElement.getBoundingClientRect().top - 41) / 62;
+    return x_pos + y_pos;    
 };
 
 ig.items = function (items_json) {
@@ -115,7 +123,7 @@ ig.view = function() {
     return m("div", [
         m("div", [
             ig.search_view(),
-            m("div", [
+            m("div#grid_holder", [
                 ig.vm.items().ordered_names().map(function (name, index){
                     // TODO: if we want a nice uniform grid look with no vertical spacing
                     // we should use a table with overflow set
@@ -144,17 +152,17 @@ ig.search_view = function() {
 
 // Builds an image block
 ig.image_view = function (item, i) {   
-    return m("div.item_block", {class: function () {
+    return m("div", {class: function () {
         // Changing class here instead of display because for some reason
         // setting the display: none to hide them, mithril wouldn't show them again
         return item.selected ? "item_block": "item_block_hidden";
     }() }, [
         m.e("img.wikitable", {config: function (a,b,c) {
-                                            ig.aniFlyIn(m.prop(0), i)(a,b,c);
-                                            //ig.addTooltip(a,b,c); 
-                                       },
+            ig.aniFlyIn(m.prop(0), ig.aniDelayFromPosition(a))(a,b,c);
+        },
                               src: item.image_url, alt: item.name,
-                              scale: m.prop(10), opacity: m.prop(0)}),
+                              scale: m.prop(10), opacity: m.prop(0)
+                             }),
     ]);
 }
 
