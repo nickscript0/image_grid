@@ -8,10 +8,9 @@ var ig = {};
 ig.aniFlyIn = function(prop, delay){
     return function(el, b, c){
         setTimeout(function(){
-            var value = prop()? 1: 0;
             m.animateProperties(el, {
-                scale: (value * 10) + 1,
-                opacity: 1-value,
+                scale: 1,
+                opacity: 1,
                 duration: "0.25s"
                 //duration: "0.5s"
             });
@@ -23,7 +22,8 @@ ig.aniFlyIn = function(prop, delay){
 // Given an image element, calculate an animation delay that would display in
 // a diagonal top left to bottom left reveal
 ig.aniDelayFromPosition = function(elem) {
-    var x_pos = (elem.getBoundingClientRect().left + 210) / 64; // increase by 64
+    // TODO make calc numbers dynamic based on css sizes
+    var x_pos = (elem.getBoundingClientRect().left + 210) / 64;
     var y_pos = (elem.parentElement.getBoundingClientRect().top - 41) / 62;
     return x_pos + y_pos;    
 };
@@ -161,7 +161,7 @@ ig.image_view = function (item, i) {
             ig.aniFlyIn(m.prop(0), ig.aniDelayFromPosition(a))(a,b,c);
         },
                               src: item.image_url, alt: item.name,
-                              scale: m.prop(10), opacity: m.prop(0)
+                              scale: m.prop(5), opacity: m.prop(0)
                              }),
     ]);
 }
