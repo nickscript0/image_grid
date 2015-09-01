@@ -57,7 +57,11 @@ def save_table(table_tds, desc_file):
         if (MAX_IMAGES and (i > MAX_IMAGES)):
             debug("Stopped at MAX_IMAGES: " + str(i))
             return
-        image_name = image_name_from_url(td.find('img')['src'])
+        img_item = td.find('img')
+        # Last table ends with a td elemnt with no img, skip it
+        if img_item is None:
+            continue
+        image_name = image_name_from_url(img_item['src'])
         if image_name not in already_saved:
             save_td(td, desc_file)
         else:
