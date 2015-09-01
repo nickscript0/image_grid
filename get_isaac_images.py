@@ -34,17 +34,14 @@ def save_tables(base_path='', bs=None):
         bs = bs_from_url(BASE_URL + '/Collection_Page')
 
     # Loop through all wikitables on page
-    div1 = bs.find('div', attrs={'id': MAIN_DIV_ID})
-    current_table = div1.findNext('table', attrs={'class': TABLE1_ID})
+    wikitables = bs.findAll('table', attrs={'class': TABLE1_ID})
     desc_file = Desc(base_path)
     i = 1
     try:
-        while(current_table != None):
+        for current_table in wikitables:
             debug('Processing table ' + str(i))
             tds = current_table.findAll('td')
             save_table(tds, desc_file)
-            current_table = current_table.findNextSibling(
-                'table', attrs={'class': TABLE1_ID})
             i += 1
     finally:
         desc_file.write()
