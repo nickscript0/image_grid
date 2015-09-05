@@ -1,5 +1,6 @@
 // TODO: jsdoc the functions
 
+var RES_PATH = '/res';
 var FILTERS = ['All', 'Items', 'Trinkets', 'Devil Room', 'Angel Room', 'Cards'];
 
 // Module
@@ -66,7 +67,7 @@ ig.items = function(items_json) {
       escaped_key = key.split('%').join('%25');
       this.ordered_names().push(items_json[key].name);
       this.dict()[items_json[key].name] = {
-        image_url: '/test/' + escaped_key,
+        image_url: RES_PATH + '/' + escaped_key,
         description: items_json[key].description,
         name: items_json[key].name,
         selected: true, // true when matching search term
@@ -135,7 +136,7 @@ ig.vm = new function() {
 
     m.request({
       method: "GET",
-      url: "/test/descriptions.json"
+      url: RES_PATH + "/descriptions.json"
     }).then(function(a) {
       vm.items(new ig.items(a));
       vm.item_count(vm.items().ordered_names.length);

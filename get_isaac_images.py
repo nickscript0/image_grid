@@ -7,17 +7,17 @@
 
 # Debug: reload(gi); gi.save_tables(base_path=path)
 
-#from lib.get_trinkets import save_trinkets
-#from lib.get_items import save_items
-#from lib.get_rooms import save_rooms
+from lib.get_trinkets import save_trinkets
+from lib.get_items import save_items
+from lib.get_rooms import tag_rooms
 from lib.get_cards import save_cards
 
 
 def main():
-    # save_items()
-    # save_trinkets()
-    # save_rooms()
+    save_items()
     save_cards()
+    save_trinkets()
+    tag_rooms()
 
 
 if __name__ == "__main__":

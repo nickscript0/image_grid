@@ -8,7 +8,7 @@ ROOMS = {
 }
 
 
-def save_rooms(base_path='', bs=None):
+def tag_rooms(base_path='', bs=None):
     if bs is None:
         bs = bs_from_url(BASE_URL + '/Item_Pool')
 
