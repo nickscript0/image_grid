@@ -20,7 +20,7 @@ def _save_cards(base_path, bs, desc_file):
     tables = bs.findAll('table')
     rows = []
     for table in tables:
-        rows.extend(DescTableRow.parseTable(table))
+        rows.extend(DescTableRow.parseTable(table, DescTableRow.PARSER_CARD))
 
     already_saved_list = get_already_saved(desc_file.base_path)
 

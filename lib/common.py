@@ -23,8 +23,10 @@ class DescTableRow(object):
 
     """ This parses a common table row format found on Trinkets and Item_Pool pages.
         TODO: no relation to Desc class, need to clarify this. """
+    PARSER_DEFAULT = 'default'
+    PARSER_CARD = 'card'
 
-    def __init__(self, tr):
+    def __init__(self, tr, parser):
         self.item_name = None
         self.image_name = None
         self.image_url = None
@@ -32,28 +34,54 @@ class DescTableRow(object):
         self.image_height = None
         self.description = None
 
-        self._parse(tr)
+        if parser == self.PARSER_CARD:
+            self._parseCard(tr)
+        else:
+            self._parse(tr)
 
     def _parse(self, tr):
         tds = tr.findAll('td')
         self.item_name = tds[0].find('a')['title']
         img = tds[1].find('img')
+        self._setImageProps(img)
+        self._setDescriptionProp(tds[2])
+
+    def _parseCard(self, tr):
+        tds = tr.findAll('td')
+
+        # For the Card page, there is 3 possible 1st tds
+        # 1. a span, 2. an <a>, 3. text
+        name_item = tds[0].find('span')
+        if name_item is not None:
+            self.item_name = name_item.text
+        else:
+            res = self.item_name = tds[0].find('a')
+            self.item_name = res['title'] if res is not None else tds[0].text
+
+        self._setImageProps(tds[1].find('img'))
+        # tds[2] is the card message skip it
+        self._setDescriptionProp(tds[3])
+
+    def _setDescriptionProp(self, desc_with_tr):
+        """ Helper. """
+        desc_with_tr = tags_to_text('a', desc_with_tr)
+        self.description = desc_with_tr.replace(
+            '<td>', '').replace('</td>', '')
+
+    def _setImageProps(self, img):
+        """ Helper """
         self.image_url = img['src']
         self.image_width = img['width']
         self.image_height = img['height']
         self.image_name = image_name_from_url(self.image_url)
 
-        desc_with_tr = tags_to_text('a', tds[2])
-        self.description = desc_with_tr.replace(
-            '<td>', '').replace('</td>', '')
-
     @classmethod
-    def parseTable(cls, table):
+    def parseTable(cls, table, parser=PARSER_DEFAULT):
         """ Given a Trinkets style page BS table element, return a list of
             DescTableRow corresponding to each table row"""
 
         trs = table.findAll('tr')
-        rows = [DescTableRow(tr) for tr in trs[1:]]
+        rows = [DescTableRow(tr, parser) for tr in trs[1:]]
         return rows
 
 
