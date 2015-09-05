@@ -1,34 +1,32 @@
 body {
-    background-color: #D6D6D6; /* #d9c9c3; */
-/*    font-family: "Roboto Condensed",Helvetica,sans-serif;*/
-    font-family: Arial, Helvetica, sans-serif;
+  background-color: #D6D6D6;
+  /* #d9c9c3; */
+  /*    font-family: "Roboto Condensed",Helvetica,sans-serif;*/
+  font-family: Arial, Helvetica, sans-serif;
 }
-
+.filter-buttons {
+  text-align: center;
+}
 .item_block {
-    border: 1px solid grey;
-    height: 50px;
-    width: 50px;
-    display: inline-block;
-    
-    margin-left: 3px;
-    margin-right: 3px;
-    padding: 3px;
-    background-color: rgba(118, 103, 103, 0.64);  
+  border: 1px solid grey;
+  height: 50px;
+  width: 50px;
+  display: inline-block;
+  margin-left: 3px;
+  margin-right: 3px;
+  padding: 3px;
+  background-color: rgba(118, 103, 103, 0.64);
 }
-
 .item_block:hover {
-    border: 2px solid black;
-    padding: 2px;
+  border: 2px solid black;
+  padding: 2px;
 }
-
 .item_block_hidden {
-    display: none;   
+  display: none;
 }
-
-img.wikitable {        
-    display: block;
-    width:100%;
-    height:auto;
-    max-height:100%;
+img.wikitable {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 100%;
 }
-

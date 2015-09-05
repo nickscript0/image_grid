@@ -1,5 +1,7 @@
 // TODO: jsdoc the functions
 
+var FILTERS = ['All', 'Items', 'Trinkets', 'Devil Room', 'Angel Room'];
+
 // Module
 var ig = {};
 
@@ -96,6 +98,7 @@ ig.vm = new function() {
   // ig.items
   vm.items = m.prop({});
   vm.item_count = m.prop();
+  vm.item_filter = m.prop('All');
 
   // Init called by controller
   vm.init = function() {
@@ -123,8 +126,28 @@ ig.controller = function() {
 }
 
 // Views
+ig.view_filter_buttons = function(ctrl) {
+  return m('div.controls', FILTERS.map(function(filter_name) {
+    return m('button', {
+        class: ig.helper_getButtonClass(filter_name, ig.vm.item_filter()),
+        onclick: function() {
+          ig.vm.item_filter(filter_name);
+        }
+      },
+      filter_name);
+  }))
+}
+
+// Determines button class
+ig.helper_getButtonClass = function(name, filter_status) {
+  var selected_class = 'pure-button pure-button-primary filter-button';
+  var unselected_class = 'pure-button filter-button';
+  return (name === filter_status) ? selected_class : unselected_class;
+}
+
 ig.view = function() {
   return m("div", [
+    m('div.filter-buttons', ig.view_filter_buttons()),
     m("div", [
       ig.search_view(),
       m("div#grid_holder", [
