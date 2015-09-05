@@ -78,18 +78,21 @@ ig.search = function(term, dict) {
   var visible_count = 0;
   term = term.toLowerCase();
 
-  for (var key in dict) {
-    if (dict.hasOwnProperty(key)) {
-      if (term === '') {
-        dict[key].selected = true;
-        visible_count += 1;
-      } else if (key.toLowerCase().search(term) > -1) {
-        dict[key].selected = true;
-        visible_count += 1;
-      } else {
-        dict[key].selected = false;
-      }
+
+
+  var filtered_keys = Object.getOwnPropertyNames(dict).filter(ig.filterItem);
+  // Following line being red is acceptable as it works in ES5 latest browsers and will be accepted when I add ES6 linter
+  for (var key of filtered_keys) {
+    if (term === '') {
+      dict[key].selected = true;
+      visible_count += 1;
+    } else if (key.toLowerCase().search(term) > -1) {
+      dict[key].selected = true;
+      visible_count += 1;
+    } else {
+      dict[key].selected = false;
     }
+
   }
   console.log(visible_count + ' items visible');
   return visible_count;
