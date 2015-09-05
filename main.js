@@ -13,6 +13,8 @@ ig.filterItem = function(name) {
 
   if (filter_key === 'All') {
     return true;
+  } else if (filter_key === 'Items') {
+    return (raw_items[item_key].type === 'item')
   } else if (filter_key === 'Trinkets') {
     return (raw_items[item_key].type === 'trinket')
   } else if (filter_key === 'Devil Room') {
@@ -38,7 +40,7 @@ ig.aniFlyIn = function(prop, delay) {
         duration: "1s"
       });
       ig.addTooltip(el, b, c);
-    }, delay * 50); //, delay * 50);
+    }, delay * 25); //, delay * 50);
   };
 };
 
