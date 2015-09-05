@@ -74,8 +74,9 @@ ig.items = function(items_json) {
   }
 };
 
-ig.search = function(term, dict) {
+ig.search = function(dict) {
   var matches = [];
+  var term = ig.vm.search_term();
   console.log("Search term: " + term + ', term==="" ? ' + (term === ''));
   var visible_count = 0;
   term = term.toLowerCase();
@@ -123,6 +124,7 @@ ig.vm = new function() {
   vm.items = m.prop({});
   vm.item_count = m.prop();
   vm.item_filter = m.prop('All');
+  vm.search_term = m.prop('');
 
   // Init called by controller
   vm.init = function() {
@@ -139,7 +141,8 @@ ig.vm = new function() {
   };
 
   vm.updateSearch = function(term) {
-    vm.item_count(ig.search(term, vm.items().dict()));
+    vm.search_term(term);
+    vm.item_count(ig.search(vm.items().dict()));
   }
   return vm
 }
@@ -156,6 +159,8 @@ ig.view_filter_buttons = function(ctrl) {
         class: ig.helper_getButtonClass(filter_name, ig.vm.item_filter()),
         onclick: function() {
           ig.vm.item_filter(filter_name);
+          // Refresh the search filter
+          ig.vm.updateSearch(ig.vm.search_term());
         }
       },
       filter_name);
