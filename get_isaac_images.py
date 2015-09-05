@@ -27,7 +27,30 @@ DESCRIPTIONS_FILE = 'descriptions.json'
 MAX_IMAGES = None  # Debugging max number of images to process
 
 
-def save_tables(base_path='', bs=None):
+def save_trinkets(base_path='', bs=None):
+    if bs is None:
+        bs = bs_from_url(BASE_URL + '/Trinkets')
+    table = bs.find('table', attrs={'class': 'trinkets'})
+    desc_file = Desc(base_path)
+
+    trs = table.findAll('tr')
+
+    # Skip the header
+    for tr in trs[1:]:
+        tds = tr.findAll('td')
+        item_name = tds[0].find('a').title
+        img_url = tds[1].find('img').src
+        image_name = image_name_from_url(img_url)
+        description = tags_to_text('a', tds[2])
+
+        save_image(img_url, base_path)
+        desc_file.update_item(
+            item_name, image_name, description, Desc.TYPE_TRINKET)
+
+    desc_file.write()
+
+
+def save_items(base_path='', bs=None):
     TABLE1_ID = "wikitable"
 
     if bs is None:
@@ -78,7 +101,8 @@ def save_td(td, desc_file):
     # Get description
     image_name = image_name_from_url(img_url)
     desc_rel_url = td.find('a')['href']  # Description page url
-    save_description(desc_rel_url, image_name, desc_file)
+    item_name, description = get_description(desc_rel_url)
+    desc_file.update_item(item_name, image_name, description, Desc.TYPE_ITEM)
 
 
 def save_image(img_url, base_path):
@@ -86,11 +110,6 @@ def save_image(img_url, base_path):
     urllib.urlretrieve(img_url, path)
     debug('Saved ' + path)
 
-
-def save_description(desc_relative_url, image_name, desc_file):
-    item_name, description = get_description(desc_relative_url)
-    desc_file.current[image_name] = {
-        'name': item_name, 'description': description}
 
 # Helpers
 
@@ -101,6 +120,9 @@ class Desc(object):
     Loads the pre-existing description JSON from file, allowing app
     to write to it, then write it back to file.
     """
+
+    TYPE_ITEM = 'item'
+    TYPE_TRINKET = 'trinket'
 
     def __init__(self, base_path=''):
         self.base_path = base_path
@@ -113,6 +135,11 @@ class Desc(object):
         except IOError:
             # File doesn't exist yet
             self.current = collections.OrderedDict()  # {}
+
+    def update_item(self, item_name, image_name, description, item_type):
+        self.current[image_name] = {
+            'name': item_name, 'description': description,
+            'type': item_type}
 
     def write(self):
         """ Writes the current JSON back to file. """
@@ -162,7 +189,7 @@ def get_description(desc_relative_url):
     res = remove_tags('script', next_el)
     # Convert <a> tags to text
     # but return html instead of text to preserve formatting in the output
-    return (item_name, str(tags_to_text('a', res)))
+    return (item_name, tags_to_text('a', res))
 
 
 def tags_to_text(tag_name, html):
@@ -170,7 +197,7 @@ def tags_to_text(tag_name, html):
     tags = html.findAll(tag_name)
     for t in tags:
         t.replaceWith(t.text)
-    return html
+    return str(html)
 
 
 def remove_tags(tag_name, html):
@@ -210,7 +237,7 @@ def debug(s):
 
 
 def main():
-    save_tables()
+    save_items()
 
 if __name__ == "__main__":
     main()
