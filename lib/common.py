@@ -68,6 +68,7 @@ class Desc(object):
     TYPE_TRINKET = 'trinket'
 
     ROOM_DEVIL = 'room_devil'
+    ROOM_ANGEL = 'room_angel'
 
     def __init__(self, base_path=''):
         self.base_path = base_path
