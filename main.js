@@ -232,13 +232,14 @@ ig.image_view = function(item) {
     }()
   }, [
     m.e("img.wikitable", {
-      config: function(a, b, c) {
-        ig.aniFlyIn(m.prop(0), ig.aniDelayFromPosition(a))(a, b, c);
+      config: function(element, isInitialized, context) {
+        ig.aniFlyIn(m.prop(0), ig.aniDelayFromPosition(element))(element, isInitialized, context);
       },
       src: item.image_url,
       alt: item.name,
       scale: m.prop(1),
-      opacity: m.prop(0)
+      opacity: m.prop(0),
+      key: item.name
     }),
   ]);
 }
