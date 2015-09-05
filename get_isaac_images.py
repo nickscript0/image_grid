@@ -30,7 +30,7 @@ MAX_IMAGES = None  # Debugging max number of images to process
 def save_trinkets(base_path='', bs=None):
     if bs is None:
         bs = bs_from_url(BASE_URL + '/Trinkets')
-    table = bs.find('table', attrs={'class': 'trinkets'})
+    table = bs.find('table')
     desc_file = Desc(base_path)
 
     trs = table.findAll('tr')
@@ -38,8 +38,8 @@ def save_trinkets(base_path='', bs=None):
     # Skip the header
     for tr in trs[1:]:
         tds = tr.findAll('td')
-        item_name = tds[0].find('a').title
-        img_url = tds[1].find('img').src
+        item_name = tds[0].find('a')['title']
+        img_url = tds[1].find('img')['src']
         image_name = image_name_from_url(img_url)
         description = tags_to_text('a', tds[2])
 
@@ -237,7 +237,8 @@ def debug(s):
 
 
 def main():
-    save_items()
+    # save_items()
+    save_trinkets()
 
 if __name__ == "__main__":
     main()
