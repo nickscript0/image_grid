@@ -30,24 +30,35 @@ MAX_IMAGES = None  # Debugging max number of images to process
 def save_trinkets(base_path='', bs=None):
     if bs is None:
         bs = bs_from_url(BASE_URL + '/Trinkets')
-    table = bs.find('table')
-    desc_file = Desc(base_path)
 
+    desc_file = Desc(base_path)
+    try:
+        _save_trinkets(base_path, bs, desc_file)
+    finally:
+        desc_file.write()
+
+
+def _save_trinkets(base_path, bs, desc_file):
+    table = bs.find('table')
     trs = table.findAll('tr')
 
     # Skip the header
     for tr in trs[1:]:
         tds = tr.findAll('td')
         item_name = tds[0].find('a')['title']
-        img_url = tds[1].find('img')['src']
+        img = tds[1].find('img')
+        img_url = img['src']
+        img_width = img['width']
+        img_height = img['height']
         image_name = image_name_from_url(img_url)
-        description = tags_to_text('a', tds[2])
+
+        desc_with_tr = tags_to_text('a', tds[2])
+        description = desc_with_tr.replace('<td>', '').replace('</td>', '')
 
         save_image(img_url, base_path)
         desc_file.update_item(
-            item_name, image_name, description, Desc.TYPE_TRINKET)
-
-    desc_file.write()
+            item_name, image_name, img_width, img_height,
+            description, Desc.TYPE_TRINKET)
 
 
 def save_items(base_path='', bs=None):
@@ -96,13 +107,16 @@ def save_td(td, desc_file):
     # Get image
     img = td.find('img')
     img_url = img['src']
+    img_width = img['width']
+    img_height = img['height']
     save_image(img_url, desc_file.base_path)
 
     # Get description
     image_name = image_name_from_url(img_url)
     desc_rel_url = td.find('a')['href']  # Description page url
     item_name, description = get_description(desc_rel_url)
-    desc_file.update_item(item_name, image_name, description, Desc.TYPE_ITEM)
+    desc_file.update_item(item_name, image_name, img_width, img_height,
+                          description, Desc.TYPE_ITEM)
 
 
 def save_image(img_url, base_path):
@@ -136,10 +150,13 @@ class Desc(object):
             # File doesn't exist yet
             self.current = collections.OrderedDict()  # {}
 
-    def update_item(self, item_name, image_name, description, item_type):
+    def update_item(self, item_name, image_name, image_width, image_height,
+                    description, item_type):
         self.current[image_name] = {
             'name': item_name, 'description': description,
-            'type': item_type}
+            'type': item_type,
+            'image_width': image_width,
+            'image_height': image_height}
 
     def write(self):
         """ Writes the current JSON back to file. """
