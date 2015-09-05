@@ -1,6 +1,6 @@
 // TODO: jsdoc the functions
 
-var FILTERS = ['All', 'Items', 'Trinkets', 'Devil Room', 'Angel Room'];
+var FILTERS = ['All', 'Items', 'Trinkets', 'Devil Room', 'Angel Room', 'Cards'];
 
 // Module
 var ig = {};
@@ -19,6 +19,8 @@ ig.filterItem = function(name) {
     return raw_items[item_key].hasOwnProperty('room_devil');
   } else if (filter_key === 'Angel Room') {
     return raw_items[item_key].hasOwnProperty('room_angel');
+  } else if (filter_key === 'Cards') {
+    return (raw_items[item_key].type === 'card');
   }
   return false;
 }
