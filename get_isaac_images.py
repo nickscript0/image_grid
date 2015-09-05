@@ -42,6 +42,8 @@ def _save_trinkets(base_path, bs, desc_file):
     table = bs.find('table')
     trs = table.findAll('tr')
 
+    already_saved_list = get_already_saved(desc_file.base_path)
+
     # Skip the header
     for tr in trs[1:]:
         tds = tr.findAll('td')
@@ -55,7 +57,7 @@ def _save_trinkets(base_path, bs, desc_file):
         desc_with_tr = tags_to_text('a', tds[2])
         description = desc_with_tr.replace('<td>', '').replace('</td>', '')
 
-        save_image(img_url, base_path)
+        save_image(img_url, base_path, already_saved_list)
         desc_file.update_item(
             item_name, image_name, img_width, img_height,
             description, Desc.TYPE_TRINKET)
@@ -97,19 +99,19 @@ def save_table(table_tds, desc_file):
             continue
         image_name = image_name_from_url(img_item['src'])
         if image_name not in already_saved:
-            save_td(td, desc_file)
+            save_td(td, desc_file, already_saved)
         else:
             skip_count += 1
     debug('Skipped %s already saved images.' % (skip_count))
 
 
-def save_td(td, desc_file):
+def save_td(td, desc_file, already_saved_list):
     # Get image
     img = td.find('img')
     img_url = img['src']
     img_width = img['width']
     img_height = img['height']
-    save_image(img_url, desc_file.base_path)
+    save_image(img_url, desc_file.base_path, already_saved_list)
 
     # Get description
     image_name = image_name_from_url(img_url)
@@ -119,10 +121,14 @@ def save_td(td, desc_file):
                           description, Desc.TYPE_ITEM)
 
 
-def save_image(img_url, base_path):
-    path = os.path.join(base_path, RESOURCE_PATH, image_name_from_url(img_url))
-    urllib.urlretrieve(img_url, path)
-    debug('Saved ' + path)
+def save_image(img_url, base_path, already_saved_list):
+    img_name = image_name_from_url(img_url)
+    if img_name not in already_saved_list:
+        path = os.path.join(base_path, RESOURCE_PATH, img_name)
+        urllib.urlretrieve(img_url, path)
+        debug('Saved ' + path)
+    else:
+        debug('Skipped %s, already saved.' % (img_name))
 
 
 # Helpers
