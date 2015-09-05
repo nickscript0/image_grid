@@ -7,8 +7,8 @@
 
 # Debug: reload(gi); gi.save_tables(base_path=path)
 
-from lib.get_trinkets import save_trinkets
-from lib.get_items import save_items
+#from lib.get_trinkets import save_trinkets
+#from lib.get_items import save_items
 from lib.get_rooms import save_rooms
 
 

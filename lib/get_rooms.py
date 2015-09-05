@@ -1,7 +1,7 @@
 # Retrieve metadata on which items map to which rooms
 from lib.common import bs_from_url, BASE_URL, Desc, DescTableRow, debug
 
-# Key: wiki page, val: Desc object constant
+# Key: wiki page end of url, val: Desc object constant
 ROOMS = {
     'Devil_Room': Desc.ROOM_DEVIL,
     'Angel_Room': Desc.ROOM_ANGEL
