@@ -6,7 +6,11 @@ var FILTERS = ['All', 'Items', 'Trinkets', 'Devil Room', 'Angel Room'];
 var ig = {};
 
 // Models
-ig.filterItem = function(item_key, filter_key, raw_items) {
+ig.filterItem = function(name) {
+  var item_key = ig.vm.items().dict()[name].original_key;
+  var filter_key = ig.vm.item_filter();
+  var raw_items = ig.vm.items().raw_items;
+
   if (filter_key === 'All') {
     return true;
   } else if (filter_key === 'Trinkets') {
@@ -167,12 +171,7 @@ ig.view = function() {
       ig.search_view(),
       m("div#grid_holder", [
         ig.vm.items().ordered_names()
-        .filter(function(name) {
-          var item_key = ig.vm.items().dict()[name].original_key;
-          var filter_key = ig.vm.item_filter();
-          var raw_items = ig.vm.items().raw_items;
-          return ig.filterItem(item_key, filter_key, raw_items);
-        })
+        .filter(ig.filterItem)
         .map(function(name) {
           // TODO: if we want a nice uniform grid look with no vertical spacing
           // we should use a table with overflow set
