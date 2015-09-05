@@ -5,8 +5,21 @@ var FILTERS = ['All', 'Items', 'Trinkets', 'Devil Room', 'Angel Room'];
 // Module
 var ig = {};
 
-
 // Models
+ig.filterItem = function(item_key, filter_key, raw_items) {
+  if (filter_key === 'All') {
+    return true;
+  } else if (filter_key === 'Trinkets') {
+    return (raw_items[item_key].type === 'trinket')
+  } else if (filter_key === 'Devil Room') {
+    return raw_items[item_key].hasOwnProperty('room_devil');
+  } else if (filter_key === 'Angel Room') {
+    return raw_items[item_key].hasOwnProperty('room_angel');
+  }
+  return false;
+}
+
+
 
 // Adds a fly in animation to elements
 ig.aniFlyIn = function(prop, delay) {
@@ -37,6 +50,7 @@ ig.items = function(items_json) {
   this.ordered_names = m.prop([]);
   // Map of key=name, value=description
   this.dict = m.prop({});
+  this.raw_items = items_json;
 
   for (var key in items_json) {
     if (items_json.hasOwnProperty(key)) {
@@ -151,10 +165,10 @@ ig.view = function() {
     m("div", [
       ig.search_view(),
       m("div#grid_holder", [
-        ig.vm.items().ordered_names().map(function(name, index) {
+        ig.vm.items().ordered_names().map(function(name) {
           // TODO: if we want a nice uniform grid look with no vertical spacing
           // we should use a table with overflow set
-          return ig.image_view(ig.vm.items().dict()[name], index)
+          return ig.image_view(ig.vm.items().dict()[name])
         })
 
       ]),
@@ -199,7 +213,7 @@ ig.search_view = function() {
 }
 
 // Builds an image block
-ig.image_view = function(item, i) {
+ig.image_view = function(item) {
   return m("div", {
     class: function() {
       // Changing class here instead of display because for some reason
