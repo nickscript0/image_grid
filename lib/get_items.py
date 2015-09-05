@@ -1,3 +1,4 @@
+# Retrieves items
 from lib.common import bs_from_url, BASE_URL, Desc, debug, save_image, \
     get_already_saved, MAX_IMAGES, image_name_from_url, get_description
 

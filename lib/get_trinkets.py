@@ -1,7 +1,6 @@
-
+# Retrieves Trinkets
 from lib.common import bs_from_url, BASE_URL, Desc,\
-    get_already_saved, image_name_from_url, \
-    tags_to_text, save_image
+    get_already_saved, save_image, DescTableRow
 
 
 def save_trinkets(base_path='', bs=None):
@@ -17,24 +16,13 @@ def save_trinkets(base_path='', bs=None):
 
 def _save_trinkets(base_path, bs, desc_file):
     table = bs.find('table')
-    trs = table.findAll('tr')
+    rows = DescTableRow.parseTable(table)
 
     already_saved_list = get_already_saved(desc_file.base_path)
 
     # Skip the header
-    for tr in trs[1:]:
-        tds = tr.findAll('td')
-        item_name = tds[0].find('a')['title']
-        img = tds[1].find('img')
-        img_url = img['src']
-        img_width = img['width']
-        img_height = img['height']
-        image_name = image_name_from_url(img_url)
-
-        desc_with_tr = tags_to_text('a', tds[2])
-        description = desc_with_tr.replace('<td>', '').replace('</td>', '')
-
-        save_image(img_url, base_path, already_saved_list)
+    for row in rows:
+        save_image(row.image_url, base_path, already_saved_list)
         desc_file.update_item(
-            item_name, image_name, img_width, img_height,
-            description, Desc.TYPE_TRINKET)
+            row.item_name, row.image_name, row.image_width, row.image_height,
+            row.description, Desc.TYPE_TRINKET)
