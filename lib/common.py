@@ -67,6 +67,8 @@ class Desc(object):
     TYPE_ITEM = 'item'
     TYPE_TRINKET = 'trinket'
 
+    ROOM_DEVIL = 'room_devil'
+
     def __init__(self, base_path=''):
         self.base_path = base_path
         self.path = os.path.join(
@@ -86,6 +88,9 @@ class Desc(object):
             'type': item_type,
             'image_width': image_width,
             'image_height': image_height}
+
+    def tagRoom(self, image_name, room_tag):
+        self.current[image_name][room_tag] = True
 
     def write(self):
         """ Writes the current JSON back to file. """
