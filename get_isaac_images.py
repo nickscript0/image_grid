@@ -9,13 +9,15 @@
 
 #from lib.get_trinkets import save_trinkets
 #from lib.get_items import save_items
-from lib.get_rooms import save_rooms
+#from lib.get_rooms import save_rooms
+from lib.get_cards import save_cards
 
 
 def main():
     # save_items()
     # save_trinkets()
-    save_rooms()
+    # save_rooms()
+    save_cards()
 
 
 if __name__ == "__main__":

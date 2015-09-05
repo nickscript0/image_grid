@@ -66,6 +66,7 @@ class Desc(object):
 
     TYPE_ITEM = 'item'
     TYPE_TRINKET = 'trinket'
+    TYPE_CARD = 'card'
 
     ROOM_DEVIL = 'room_devil'
     ROOM_ANGEL = 'room_angel'
