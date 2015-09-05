@@ -61,7 +61,8 @@ ig.items = function(items_json) {
         image_url: '/test/' + escaped_key,
         description: items_json[key].description,
         name: items_json[key].name,
-        selected: true // true when matching search term
+        selected: true, // true when matching search term
+        original_key: key
       };
     }
   }
@@ -165,7 +166,14 @@ ig.view = function() {
     m("div", [
       ig.search_view(),
       m("div#grid_holder", [
-        ig.vm.items().ordered_names().map(function(name) {
+        ig.vm.items().ordered_names()
+        .filter(function(name) {
+          var item_key = ig.vm.items().dict()[name].original_key;
+          var filter_key = ig.vm.item_filter();
+          var raw_items = ig.vm.items().raw_items;
+          return ig.filterItem(item_key, filter_key, raw_items);
+        })
+        .map(function(name) {
           // TODO: if we want a nice uniform grid look with no vertical spacing
           // we should use a table with overflow set
           return ig.image_view(ig.vm.items().dict()[name])
