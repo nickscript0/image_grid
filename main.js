@@ -12,20 +12,17 @@ ig.filterItem = function(name) {
   var filter_key = ig.vm.item_filter();
   var raw_items = ig.vm.items().raw_items;
 
-  if (filter_key === 'All') {
-    return true;
-  } else if (filter_key === 'Items') {
-    return (raw_items[item_key].type === 'item')
-  } else if (filter_key === 'Trinkets') {
-    return (raw_items[item_key].type === 'trinket')
-  } else if (filter_key === 'Devil Room') {
-    return raw_items[item_key].hasOwnProperty('room_devil');
-  } else if (filter_key === 'Angel Room') {
-    return raw_items[item_key].hasOwnProperty('room_angel');
-  } else if (filter_key === 'Cards') {
-    return (raw_items[item_key].type === 'card');
-  }
-  return false;
+  // TODO: this shouldn't be redeclared each time this function is called
+  var FILTER_ITEM = {
+    'All': true,
+    'Items': (raw_items[item_key].type === 'item'),
+    'Trinkets': (raw_items[item_key].type === 'trinket'),
+    'Devil Room': raw_items[item_key].hasOwnProperty('room_devil'),
+    'Angel Room': raw_items[item_key].hasOwnProperty('room_angel'),
+    'Cards': (raw_items[item_key].type === 'card')
+  };
+
+  return FILTER_ITEM[filter_key] || false;
 }
 
 
