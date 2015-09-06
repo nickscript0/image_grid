@@ -224,8 +224,11 @@ ig.search_view = function() {
           border: "1px solid black",
           "background-color": "#fff"
         },
+        config: function(el, init) {
+          el.focus();
+        },
         size: 100,
-        autofocus: 'autofocus',
+        autofocus: 'autofocus', // Not sure what this is from? it seems to have no meaning
         onkeyup: m.withAttr("value", ig.vm.updateSearch)
       })
     ])
