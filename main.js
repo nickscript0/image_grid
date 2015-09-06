@@ -1,7 +1,7 @@
 // TODO: jsdoc the functions
 
 var RES_PATH = '/res';
-var FILTERS = ['All', 'Items', 'Trinkets', 'Devil Room', 'Angel Room', 'Cards'];
+var FILTERS = ['All', 'Items', 'Trinkets', 'Devil Room', 'Angel Room', 'Treasure Room', 'Shop', 'Cards'];
 
 // Module
 var ig = {};
@@ -19,6 +19,8 @@ ig.filterItem = function(name) {
     'Trinkets': (raw_items[item_key].type === 'trinket'),
     'Devil Room': raw_items[item_key].hasOwnProperty('room_devil'),
     'Angel Room': raw_items[item_key].hasOwnProperty('room_angel'),
+    'Treasure Room': raw_items[item_key].hasOwnProperty('room_treasure'),
+    'Shop': raw_items[item_key].hasOwnProperty('room_shop'),
     'Cards': (raw_items[item_key].type === 'card')
   };
 

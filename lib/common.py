@@ -98,6 +98,8 @@ class Desc(object):
 
     ROOM_DEVIL = 'room_devil'
     ROOM_ANGEL = 'room_angel'
+    ROOM_TREASURE = 'room_treasure'
+    ROOM_SHOP = 'room_shop'
 
     def __init__(self, base_path=''):
         self.base_path = base_path
@@ -120,7 +122,10 @@ class Desc(object):
             'image_height': image_height}
 
     def tagRoom(self, image_name, room_tag):
-        self.current[image_name][room_tag] = True
+        if image_name in self.current:
+            self.current[image_name][room_tag] = True
+        else:
+            debug('tagRoom: unable to find key %s' % (image_name))
 
     def write(self):
         """ Writes the current JSON back to file. """

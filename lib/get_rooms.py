@@ -4,7 +4,9 @@ from lib.common import bs_from_url, BASE_URL, Desc, DescTableRow, debug
 # Key: wiki page end of url, val: Desc object constant
 ROOMS = {
     'Devil_Room': Desc.ROOM_DEVIL,
-    'Angel_Room': Desc.ROOM_ANGEL
+    'Angel_Room': Desc.ROOM_ANGEL,
+    'Treasure_Room': Desc.ROOM_TREASURE,
+    'Shop': Desc.ROOM_SHOP
 }
 
 
