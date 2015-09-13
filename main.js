@@ -209,7 +209,8 @@ ig.search_view = function() {
     m("div", {
       style: {
         margin: "0 auto",
-        display: "inline-block"
+        display: "inline-block",
+        width: "100%"
       }
     }, [
       m("div", {
@@ -217,16 +218,17 @@ ig.search_view = function() {
           display: "inline-block",
           paddingRight: "10px"
         }
-      }, "Search"),
+      }, `Search (${ig.vm.item_count()} items)`),
       m("input", {
         style: {
           border: "1px solid black",
-          "background-color": "#fff"
+          "background-color": "#fff",
+          width: "70%",
+          display: "inline-block"
         },
         config: function(el, init) {
-          el.focus();
+          el.focus(); // This gives the search box focus after each render
         },
-        size: 100,
         autofocus: 'autofocus', // Not sure what this is from? it seems to have no meaning
         onkeyup: m.withAttr("value", ig.vm.updateSearch)
       })
