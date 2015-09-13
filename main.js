@@ -67,6 +67,8 @@ ig.items = function(items_json) {
       this.ordered_names().push(items_json[key].name);
       this.dict()[items_json[key].name] = {
         image_url: RES_PATH + '/' + escaped_key,
+        image_width: items_json[key].image_width,
+        image_height: items_json[key].image_height,
         description: items_json[key].description,
         name: items_json[key].name,
         selected: true, // true when matching search term
