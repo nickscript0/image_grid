@@ -15,7 +15,7 @@
 // }
 
 import {
-  RES_PATH, FILTERS
+  RES_PATH, FILTERS, Items
 }
 from "src/models";
 
@@ -24,9 +24,13 @@ var ig = {};
 
 // Models
 ig.filterItem = function(name) {
-  var item_key = ig.vm.items().dict()[name].original_key;
+  var item_key = ig.vm.items.dict[name].original_key;
   var filter_key = ig.vm.item_filter();
-  var raw_items = ig.vm.items().raw_items;
+  var raw_items = ig.vm.items.raw_items;
+
+  if (raw_items.length === 0) {
+    return false
+  }
 
   // TODO: this shouldn't be redeclared each time this function is called
   var FILTER_ITEM = {
@@ -69,31 +73,6 @@ ig.aniDelayFromPosition = function(elem) {
   return x_pos + y_pos;
 };
 
-ig.items = function(items_json) {
-  // List of {image_url, description, name} objects
-  this.ordered_names = m.prop([]);
-  // Map of key=name, value=description
-  this.dict = m.prop({});
-  this.raw_items = items_json;
-
-  for (var key in items_json) {
-    if (items_json.hasOwnProperty(key)) {
-      // Escape % by appending '25', due to how python SimpleHTTPServer serves files
-      let escaped_key = key.split('%').join('%25');
-      this.ordered_names().push(items_json[key].name);
-      this.dict()[items_json[key].name] = {
-        image_url: RES_PATH + '/' + escaped_key,
-        image_width: items_json[key].image_width,
-        image_height: items_json[key].image_height,
-        description: items_json[key].description,
-        name: items_json[key].name,
-        selected: true, // true when matching search term
-        original_key: key
-      };
-    }
-  }
-};
-
 ig.search = function(dict) {
   var matches = [];
   var term = ig.vm.search_term();
@@ -126,7 +105,7 @@ ig.search = function(dict) {
 ig.addTooltip = function(element, isInitialized, context) {
   if (isInitialized) return;
   var name = element.alt; // img.alt
-  var desc = ig.vm.items().dict()[element.alt].description;
+  var desc = ig.vm.items.dict[element.alt].description;
   var text = '<h3>' + name + '</h3>' + desc;
 
   var myOpentip = new Opentip(element, text, {
@@ -141,7 +120,7 @@ ig.vm = new function() {
   var vm = {};
 
   // ig.items
-  vm.items = m.prop({});
+  vm.items = new Items(); //m.prop({});
   vm.item_count = m.prop();
   vm.item_filter = m.prop('All');
   vm.search_term = m.prop('');
@@ -149,20 +128,23 @@ ig.vm = new function() {
   // Init called by controller
   vm.init = function() {
     // Get items list
-    vm.items = m.prop({});
+    //vm.items = m.prop({});
+
+    vm.items = new Items();
 
     m.request({
       method: "GET",
       url: RES_PATH + "/descriptions.json"
     }).then(function(a) {
-      vm.items(new ig.items(a));
-      vm.item_count(vm.items().ordered_names.length);
+      //vm.items(new ig.items(a));
+      vm.items.loadInput(a); // = new Items(a);
+      vm.item_count(vm.items.ordered_names.length);
     });
   };
 
   vm.updateSearch = function(term) {
     vm.search_term(term);
-    vm.item_count(ig.search(vm.items().dict()));
+    vm.item_count(ig.search(vm.items.dict));
   }
   return vm
 }
@@ -200,12 +182,12 @@ ig.view = function() {
     m("div", [
       ig.search_view(),
       m("div#grid_holder", [
-        ig.vm.items().ordered_names()
+        ig.vm.items.ordered_names
         .filter(ig.filterItem)
         .map(function(name) {
           // TODO: if we want a nice uniform grid look with no vertical spacing
           // we should use a table with overflow set
-          return ig.image_view(ig.vm.items().dict()[name])
+          return ig.image_view(ig.vm.items.dict[name])
         })
 
       ]),
