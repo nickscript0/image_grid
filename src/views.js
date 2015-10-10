@@ -32,7 +32,7 @@ function view_filter_buttons(ctrl) {
         onclick: function() {
           ctrl.vm.items.item_filter = filter_name;
           // Refresh the search filter
-          ctrl.vm.updateSearch(ctrl.vm.items.search_term());
+          ctrl.vm.updateSearch(ctrl.vm.items.search_term);
         }
       },
       filter_name);
