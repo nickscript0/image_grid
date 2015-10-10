@@ -1,3 +1,4 @@
+/* global m */
 import {
   RES_PATH
 }
@@ -14,6 +15,16 @@ export class Items {
     //this._loadInput(items_json);
 
     this.filterItem = this.filterItem.bind(this);
+    this.loadInput = this.loadInput.bind(this);
+
+    this.requestAndLoadData();
+  }
+
+  requestAndLoadData() {
+    m.request({
+      method: "GET",
+      url: RES_PATH + "/descriptions.json"
+    }).then(this.loadInput);
   }
 
   loadInput(items_json) {

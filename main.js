@@ -31,20 +31,20 @@ from "src/views";
 
 class ViewModel {
   constructor() {
-    this.items = null;
+    this.items = new Items();
 
     this.load = this.load.bind(this);
     this.updateSearch = this.updateSearch.bind(this);
   }
 
-  init() {
-    this.items = new Items();
-
-    m.request({
-      method: "GET",
-      url: RES_PATH + "/descriptions.json"
-    }).then(this.load);
-  }
+  // init() {
+  //   this.items = new Items();
+  //
+  //   m.request({
+  //     method: "GET",
+  //     url: RES_PATH + "/descriptions.json"
+  //   }).then(this.load);
+  // }
 
   load(response) {
     this.items.loadInput(response);
@@ -59,7 +59,7 @@ class ViewModel {
 class Controller {
   constructor() {
     this.vm = new ViewModel();
-    this.vm.init();
+    //this.vm.init();
   }
 }
 
