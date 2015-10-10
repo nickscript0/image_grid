@@ -8,6 +8,8 @@ export class Items {
     this.raw_items = [];
     this.item_filter = 'All';
     //this._loadInput(items_json);
+
+    this.filterItem = this.filterItem.bind(this);
   }
 
   loadInput(items_json) {
@@ -29,6 +31,30 @@ export class Items {
         };
       }
     }
+  }
+
+  filterItem(name) {
+    let item_key = this.dict[name].original_key;
+    let filter_key = this.item_filter;
+    let raw_items = this.raw_items;
+
+    if (raw_items.length === 0) {
+      return false
+    }
+
+    // TODO: this shouldn't be redeclared each time this function is called
+    var FILTER_ITEM = {
+      'All': true,
+      'Items': (raw_items[item_key].type === 'item'),
+      'Trinkets': (raw_items[item_key].type === 'trinket'),
+      'Devil Room': raw_items[item_key].hasOwnProperty('room_devil'),
+      'Angel Room': raw_items[item_key].hasOwnProperty('room_angel'),
+      'Treasure Room': raw_items[item_key].hasOwnProperty('room_treasure'),
+      'Shop': raw_items[item_key].hasOwnProperty('room_shop'),
+      'Cards': (raw_items[item_key].type === 'card')
+    };
+
+    return FILTER_ITEM[filter_key] || false;
   }
 
 }

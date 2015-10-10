@@ -22,32 +22,6 @@ from "src/models";
 // Module
 var ig = {};
 
-// Models
-ig.filterItem = function(name) {
-  var item_key = ig.vm.items.dict[name].original_key;
-  var filter_key = ig.vm.items.item_filter;
-  var raw_items = ig.vm.items.raw_items;
-
-  if (raw_items.length === 0) {
-    return false
-  }
-
-  // TODO: this shouldn't be redeclared each time this function is called
-  var FILTER_ITEM = {
-    'All': true,
-    'Items': (raw_items[item_key].type === 'item'),
-    'Trinkets': (raw_items[item_key].type === 'trinket'),
-    'Devil Room': raw_items[item_key].hasOwnProperty('room_devil'),
-    'Angel Room': raw_items[item_key].hasOwnProperty('room_angel'),
-    'Treasure Room': raw_items[item_key].hasOwnProperty('room_treasure'),
-    'Shop': raw_items[item_key].hasOwnProperty('room_shop'),
-    'Cards': (raw_items[item_key].type === 'card')
-  };
-
-  return FILTER_ITEM[filter_key] || false;
-}
-
-
 
 // Adds a fly in animation to elements
 ig.aniFlyIn = function(prop, delay) {
@@ -82,7 +56,7 @@ ig.search = function(dict) {
 
 
 
-  var filtered_keys = Object.getOwnPropertyNames(dict).filter(ig.filterItem);
+  var filtered_keys = Object.getOwnPropertyNames(dict).filter(ig.vm.items.filterItem);
   // Following line being red is acceptable as it works in ES5 latest browsers and will be accepted when I add ES6 linter
   for (var key of filtered_keys) {
     if (term === '') {
@@ -180,7 +154,7 @@ ig.view = function() {
       ig.search_view(),
       m("div#grid_holder", [
         ig.vm.items.ordered_names
-        .filter(ig.filterItem)
+        .filter(ig.vm.items.filterItem)
         .map(function(name) {
           // TODO: if we want a nice uniform grid look with no vertical spacing
           // we should use a table with overflow set
