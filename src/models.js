@@ -66,8 +66,6 @@ export class Items {
 
   search(term) {
     this.search_term = term;
-    var matches = [];
-    var term = this.search_term;
     console.log("Search term: " + term + ', term==="" ? ' + (term === ''));
     var visible_count = 0;
     term = term.toLowerCase();

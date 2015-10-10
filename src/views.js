@@ -1,9 +1,9 @@
+/* global m Opentip */
 // Views
 import {
   FILTERS
 }
 from "src/constants";
-
 
 export function main_view(ctrl) {
   return m("div", [
@@ -23,7 +23,7 @@ export function main_view(ctrl) {
       m("div", "Item Count: " + ctrl.vm.items.item_count)
     ])
   ]);
-};
+}
 
 function view_filter_buttons(ctrl) {
   return m('div.controls', FILTERS.map(function(filter_name) {
@@ -76,7 +76,7 @@ function search_view(ctrl) {
           width: "70%",
           display: "inline-block"
         },
-        config: function(el, init) {
+        config: function(el) {
           el.focus(); // This gives the search box focus after each render
         },
         autofocus: 'autofocus', // Not sure what this is from? it seems to have no meaning
@@ -105,13 +105,13 @@ function image_view(ctrl, name) {
       scale: m.prop(1),
       opacity: m.prop(0),
       key: item.name
-    }),
+    })
   ]);
 }
 
 // Adds a fly in animation to elements
 function aniFlyIn(ctrl, prop, delay) {
-  return function(el, isInitialized, context) {
+  return function(el, isInitialized) {
     setTimeout(function() {
       m.animateProperties(el, {
         scale: 1,
@@ -122,7 +122,7 @@ function aniFlyIn(ctrl, prop, delay) {
       addTooltip(el, isInitialized, ctrl.vm.items.dict[el.alt].description);
     }, delay * 25); //, delay * 50);
   };
-};
+}
 
 // Given an image element, calculate an animation delay that would display in
 // a diagonal top left to bottom left reveal
@@ -131,7 +131,7 @@ function aniDelayFromPosition(elem) {
   var x_pos = (elem.getBoundingClientRect().left + 210) / 64;
   var y_pos = (elem.parentElement.getBoundingClientRect().top - 41) / 62;
   return x_pos + y_pos;
-};
+}
 
 
 // This is not a standalone model as it references ig.vm.items, it is a vm helper
@@ -141,9 +141,9 @@ function addTooltip(element, isInitialized, desc) {
   var name = element.alt; // img.alt
   var text = '<h3>' + name + '</h3>' + desc;
 
-  var myOpentip = new Opentip(element, text, {
+  var myOpentip = new Opentip(element, text, { //eslint-disable-line no-unused-vars
     style: "dark", // Others: alert, dark, glass, drop
     showOn: 'mouseover',
     tipJoint: "top"
   });
-};
+}

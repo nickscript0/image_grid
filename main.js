@@ -1,3 +1,4 @@
+/* global m */
 // "use strict";
 
 // declare class m {
@@ -19,7 +20,7 @@ import {
 }
 from "src/models";
 import {
-  RES_PATH, FILTERS
+  RES_PATH
 }
 from "src/constants";
 
@@ -66,4 +67,4 @@ class Controller {
 m.module(document.getElementById("ig_app"), {
   controller: Controller,
   view: main_view
-});;
+});

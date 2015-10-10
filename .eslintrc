@@ -4,9 +4,6 @@
  */
 {
   "parser": "babel-eslint",
-  "env": {
-    "browser": true
-  },
   "rules": {
     "camelcase": 0,
     "quotes": 0,
@@ -14,5 +11,10 @@
     "no-use-before-define": 0,
     "no-underscore-dangle": 0,
     "dot-notation": 0
-  }
+  },
+  "env": {
+    "es6": true,
+    "browser": true
+  },
+  "extends": "eslint:recommended"
 }
