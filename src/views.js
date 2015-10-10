@@ -11,8 +11,8 @@ export function main_view(ctrl) {
     m("div", [
       search_view(ctrl),
       m("div#grid_holder", [
-        ctrl.vm.items.ordered_names
-        .filter(ctrl.vm.items.filterItem)
+        ctrl.items.ordered_names
+        .filter(ctrl.items.filterItem)
         .map(function(name) {
           // TODO: if we want a nice uniform grid look with no vertical spacing
           // we should use a table with overflow set
@@ -20,7 +20,7 @@ export function main_view(ctrl) {
         })
 
       ]),
-      m("div", "Item Count: " + ctrl.vm.items.item_count)
+      m("div", "Item Count: " + ctrl.items.item_count)
     ])
   ]);
 }
@@ -28,11 +28,11 @@ export function main_view(ctrl) {
 function view_filter_buttons(ctrl) {
   return m('div.controls', FILTERS.map(function(filter_name) {
     return m('button', {
-        class: helper_getButtonClass(filter_name, ctrl.vm.items.item_filter),
+        class: helper_getButtonClass(filter_name, ctrl.items.item_filter),
         onclick: function() {
-          ctrl.vm.items.item_filter = filter_name;
+          ctrl.items.item_filter = filter_name;
           // Refresh the search filter
-          ctrl.vm.updateSearch(ctrl.vm.items.search_term);
+          ctrl.updateSearch(ctrl.items.search_term);
         }
       },
       filter_name);
@@ -68,7 +68,7 @@ function search_view(ctrl) {
           display: "inline-block",
           paddingRight: "10px"
         }
-      }, `Search (${ctrl.vm.items.item_count} items)`),
+      }, `Search (${ctrl.items.item_count} items)`),
       m("input", {
         style: {
           border: "1px solid black",
@@ -80,7 +80,7 @@ function search_view(ctrl) {
           el.focus(); // This gives the search box focus after each render
         },
         autofocus: 'autofocus', // Not sure what this is from? it seems to have no meaning
-        onkeyup: m.withAttr("value", ctrl.vm.updateSearch)
+        onkeyup: m.withAttr("value", ctrl.updateSearch)
       })
     ])
   ])
@@ -88,7 +88,7 @@ function search_view(ctrl) {
 
 // Builds an image block
 function image_view(ctrl, name) {
-  let item = ctrl.vm.items.dict[name];
+  let item = ctrl.items.dict[name];
   return m("div", {
     class: function() {
       // Changing class here instead of display because for some reason
@@ -119,7 +119,7 @@ function aniFlyIn(ctrl, prop, delay) {
         //duration: "0.25s"
         duration: "1s"
       });
-      addTooltip(el, isInitialized, ctrl.vm.items.dict[el.alt].description);
+      addTooltip(el, isInitialized, ctrl.items.dict[el.alt].description);
     }, delay * 25); //, delay * 50);
   };
 }
@@ -134,7 +134,6 @@ function aniDelayFromPosition(elem) {
 }
 
 
-// This is not a standalone model as it references ig.vm.items, it is a vm helper
 // TODO: could be refactored using a closure/currying and accept the items.dict as the first arg.
 function addTooltip(element, isInitialized, desc) {
   if (isInitialized) return;
