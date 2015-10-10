@@ -1,0 +1,18 @@
+/* Reference:
+ *  http://eslint.org/docs/user-guide/configuring.html
+ *  http://eslint.org/docs/rules/
+ */
+{
+    "parser": "babel-eslint",
+    "env": {
+         "browser": true
+     },
+    "rules": {
+        "camelcase": 0,
+        "quotes": 0,
+        "no-console": 0,
+        "no-use-before-define": 0,
+        "no-underscore-dangle": 0,
+        "dot-notation": 0
+    }
+}

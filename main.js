@@ -1,4 +1,6 @@
-// TODO: jsdoc the functions
+"use strict";
+//from "lhorie/mithril.js";
+//import m from "jsguy/mithril.animate";
 
 var RES_PATH = '/res';
 var FILTERS = ['All', 'Items', 'Trinkets', 'Devil Room', 'Angel Room', 'Treasure Room', 'Shop', 'Cards'];
@@ -63,7 +65,7 @@ ig.items = function(items_json) {
   for (var key in items_json) {
     if (items_json.hasOwnProperty(key)) {
       // Escape % by appending '25', due to how python SimpleHTTPServer serves files
-      escaped_key = key.split('%').join('%25');
+      let escaped_key = key.split('%').join('%25');
       this.ordered_names().push(items_json[key].name);
       this.dict()[items_json[key].name] = {
         image_url: RES_PATH + '/' + escaped_key,

@@ -15,7 +15,13 @@
   <script src="src/opentip-native.js"></script>
   <script src="src/mithril.min.js"></script>
   <script src="src/mithril.animate.min.js"></script>
-  <script src="main.js"></script>
+  <!-- <script src="main.js"></script> -->
+  <script src="jspm_packages/system.js"></script>
+  <script src="config.js"></script>
+  <script>
+    System.import('main');
+  </script>
+
 </body>
 
 </html>
