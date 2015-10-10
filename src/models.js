@@ -1,5 +1,7 @@
-export const RES_PATH = '/res';
-export const FILTERS = ['All', 'Items', 'Trinkets', 'Devil Room', 'Angel Room', 'Treasure Room', 'Shop', 'Cards'];
+import {
+  RES_PATH
+}
+from "src/constants";
 
 export class Items {
   constructor() {
@@ -7,6 +9,7 @@ export class Items {
     this.dict = {};
     this.raw_items = [];
     this.item_filter = 'All';
+    this.search_term = '';
     //this._loadInput(items_json);
 
     this.filterItem = this.filterItem.bind(this);
@@ -39,7 +42,7 @@ export class Items {
     let raw_items = this.raw_items;
 
     if (raw_items.length === 0) {
-      return false
+      return false;
     }
 
     // TODO: this shouldn't be redeclared each time this function is called
@@ -55,6 +58,33 @@ export class Items {
     };
 
     return FILTER_ITEM[filter_key] || false;
+  }
+
+  search() {
+    var matches = [];
+    var term = this.search_term;
+    console.log("Search term: " + term + ', term==="" ? ' + (term === ''));
+    var visible_count = 0;
+    term = term.toLowerCase();
+
+
+
+    var filtered_keys = Object.getOwnPropertyNames(this.dict).filter(this.filterItem);
+    // Following line being red is acceptable as it works in ES5 latest browsers and will be accepted when I add ES6 linter
+    for (var key of filtered_keys) {
+      if (term === '') {
+        this.dict[key].selected = true;
+        visible_count += 1;
+      } else if (key.toLowerCase().search(term) > -1) {
+        this.dict[key].selected = true;
+        visible_count += 1;
+      } else {
+        this.dict[key].selected = false;
+      }
+
+    }
+    console.log(visible_count + ' items visible');
+    return visible_count;
   }
 
 }
