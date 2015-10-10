@@ -27,14 +27,10 @@ import {
   main_view
 }
 from "src/views";
-// Module
-var ig = {};
-
 
 class ViewModel {
   constructor() {
     this.items = null;
-    this.item_count = m.prop();
 
     this.load = this.load.bind(this);
     this.updateSearch = this.updateSearch.bind(this);
@@ -51,19 +47,13 @@ class ViewModel {
 
   load(response) {
     this.items.loadInput(response);
-    this.item_count(this.items.ordered_names.length);
   }
 
   updateSearch(term) {
     this.items.search_term = term;
-    this.item_count(this.items.search(this.items.dict));
+    this.items.search(this.items.dict);
   }
 
-}
-
-// Controller
-ig.controller = function() {
-  ig.vm.init()
 }
 
 class Controller {

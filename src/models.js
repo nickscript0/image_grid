@@ -10,6 +10,7 @@ export class Items {
     this.raw_items = [];
     this.item_filter = 'All';
     this.search_term = '';
+    this.item_count = null;
     //this._loadInput(items_json);
 
     this.filterItem = this.filterItem.bind(this);
@@ -17,6 +18,7 @@ export class Items {
 
   loadInput(items_json) {
     this.raw_items = items_json;
+
     for (let key in items_json) {
       if (items_json.hasOwnProperty(key)) {
         // Escape % by appending '25', due to how python SimpleHTTPServer serves files
@@ -34,6 +36,8 @@ export class Items {
         };
       }
     }
+
+    this.item_count = this.ordered_names.length;
   }
 
   filterItem(name) {
@@ -84,7 +88,8 @@ export class Items {
 
     }
     console.log(visible_count + ' items visible');
-    return visible_count;
+    this.item_count = visible_count;
   }
+
 
 }

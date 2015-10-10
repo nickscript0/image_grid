@@ -20,7 +20,7 @@ export function main_view(ctrl) {
         })
 
       ]),
-      m("div", "Item Count: " + ctrl.vm.item_count())
+      m("div", "Item Count: " + ctrl.vm.items.item_count)
     ])
   ]);
 };
@@ -68,7 +68,7 @@ function search_view(ctrl) {
           display: "inline-block",
           paddingRight: "10px"
         }
-      }, `Search (${ctrl.vm.item_count()} items)`),
+      }, `Search (${ctrl.vm.items.item_count} items)`),
       m("input", {
         style: {
           border: "1px solid black",
