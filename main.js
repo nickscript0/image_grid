@@ -1,7 +1,7 @@
 "use strict";
 
-var RES_PATH = '/res';
-var FILTERS = ['All', 'Items', 'Trinkets', 'Devil Room', 'Angel Room', 'Treasure Room', 'Shop', 'Cards'];
+const RES_PATH = '/res';
+const FILTERS = ['All', 'Items', 'Trinkets', 'Devil Room', 'Angel Room', 'Treasure Room', 'Shop', 'Cards'];
 
 // Module
 var ig = {};
