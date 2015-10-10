@@ -28,11 +28,15 @@ from "src/views";
 
 class Controller {
   constructor() {
-    this.items = new Items();
+    this._items = new Items();
     this.updateSearch = this.updateSearch.bind(this);
   }
   updateSearch(term) {
-    this.items.search(term);
+    this._items.search(term);
+  }
+
+  get items() { // TODO: properly separate this from the view
+    return this._items;
   }
 }
 
