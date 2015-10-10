@@ -25,7 +25,7 @@ var ig = {};
 // Models
 ig.filterItem = function(name) {
   var item_key = ig.vm.items.dict[name].original_key;
-  var filter_key = ig.vm.item_filter();
+  var filter_key = ig.vm.items.item_filter;
   var raw_items = ig.vm.items.raw_items;
 
   if (raw_items.length === 0) {
@@ -122,7 +122,7 @@ ig.vm = new function() {
   // ig.items
   vm.items = null;
   vm.item_count = m.prop();
-  vm.item_filter = m.prop('All');
+
   vm.search_term = m.prop('');
 
   // Init called by controller
@@ -155,9 +155,9 @@ ig.controller = function() {
 ig.view_filter_buttons = function(ctrl) {
   return m('div.controls', FILTERS.map(function(filter_name) {
     return m('button', {
-        class: ig.helper_getButtonClass(filter_name, ig.vm.item_filter()),
+        class: ig.helper_getButtonClass(filter_name, ig.vm.items.item_filter),
         onclick: function() {
-          ig.vm.item_filter(filter_name);
+          ig.vm.items.item_filter = filter_name;
           // Refresh the search filter
           ig.vm.updateSearch(ig.vm.search_term());
         }

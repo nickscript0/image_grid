@@ -6,6 +6,7 @@ export class Items {
     this.ordered_names = [];
     this.dict = {};
     this.raw_items = [];
+    this.item_filter = 'All';
     //this._loadInput(items_json);
   }
 
