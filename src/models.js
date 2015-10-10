@@ -64,7 +64,8 @@ export class Items {
     return FILTER_ITEM[filter_key] || false;
   }
 
-  search() {
+  search(term) {
+    this.search_term = term;
     var matches = [];
     var term = this.search_term;
     console.log("Search term: " + term + ', term==="" ? ' + (term === ''));

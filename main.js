@@ -50,8 +50,7 @@ class ViewModel {
   }
 
   updateSearch(term) {
-    this.items.search_term = term;
-    this.items.search(this.items.dict);
+    this.items.search(term);
   }
 
 }
