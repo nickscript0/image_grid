@@ -35,7 +35,6 @@ class ViewModel {
   constructor() {
     this.items = null;
     this.item_count = m.prop();
-    this.search_term = m.prop('');
 
     this.load = this.load.bind(this);
     this.updateSearch = this.updateSearch.bind(this);
