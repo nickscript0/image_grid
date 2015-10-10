@@ -18,8 +18,6 @@ System.config({
     "babel": "npm:babel-core@5.8.25",
     "babel-runtime": "npm:babel-runtime@5.8.25",
     "core-js": "npm:core-js@0.9.18",
-    "jsguy/mithril.animate": "github:jsguy/mithril.animate@master",
-    "lhorie/mithril.js": "github:lhorie/mithril.js@0.2.0",
     "github:jspm/nodelibs-assert@0.1.0": {
       "assert": "npm:assert@1.3.0"
     },

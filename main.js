@@ -1,6 +1,4 @@
 "use strict";
-//from "lhorie/mithril.js";
-//import m from "jsguy/mithril.animate";
 
 var RES_PATH = '/res';
 var FILTERS = ['All', 'Items', 'Trinkets', 'Devil Room', 'Angel Room', 'Treasure Room', 'Shop', 'Cards'];
