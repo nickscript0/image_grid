@@ -1,4 +1,19 @@
+
 "use strict";
+
+// declare class m {
+//   x: string;
+//   static animateProperties(a: Object, b: Object): Object;
+//   static prop(): Object;
+//   static request(a: Object): Object;
+//   constructor(): Object;
+//   static Callable(): Object;
+// }
+// //declare function m(o: Object): Object;
+//
+// declare class Opentip {
+//
+// }
 
 const RES_PATH = '/res';
 const FILTERS = ['All', 'Items', 'Trinkets', 'Devil Room', 'Angel Room', 'Treasure Room', 'Shop', 'Cards'];
