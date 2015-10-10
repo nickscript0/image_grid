@@ -120,15 +120,13 @@ ig.vm = new function() {
   var vm = {};
 
   // ig.items
-  vm.items = new Items(); //m.prop({});
+  vm.items = null;
   vm.item_count = m.prop();
   vm.item_filter = m.prop('All');
   vm.search_term = m.prop('');
 
   // Init called by controller
   vm.init = function() {
-    // Get items list
-    //vm.items = m.prop({});
 
     vm.items = new Items();
 
@@ -136,8 +134,7 @@ ig.vm = new function() {
       method: "GET",
       url: RES_PATH + "/descriptions.json"
     }).then(function(a) {
-      //vm.items(new ig.items(a));
-      vm.items.loadInput(a); // = new Items(a);
+      vm.items.loadInput(a);
       vm.item_count(vm.items.ordered_names.length);
     });
   };
