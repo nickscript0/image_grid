@@ -1,4 +1,3 @@
-
 "use strict";
 
 // declare class m {
@@ -15,8 +14,10 @@
 //
 // }
 
-const RES_PATH = '/res';
-const FILTERS = ['All', 'Items', 'Trinkets', 'Devil Room', 'Angel Room', 'Treasure Room', 'Shop', 'Cards'];
+import {
+  RES_PATH, FILTERS
+}
+from "src/models";
 
 // Module
 var ig = {};
@@ -279,4 +280,4 @@ ig.image_view = function(item) {
 m.module(document.getElementById("ig_app"), {
   controller: ig.controller,
   view: ig.view
-});
+});;
