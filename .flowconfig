@@ -1,8 +1,6 @@
 [ignore]
 .*/jspm_packages/.*
 .*/node_modules/.*
-.*/ext/.*
-.*/old/.*
 .*/flow_interfaces/.*
 
 [include]
