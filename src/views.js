@@ -43,8 +43,8 @@ function view_filter_buttons(ctrl) {
 
 // Determines button class
 function helper_getButtonClass(name, filter_status) {
-  var selected_class = 'pure-button pure-button-primary filter-button';
-  var unselected_class = 'pure-button filter-button';
+  let selected_class = 'pure-button pure-button-primary filter-button';
+  let unselected_class = 'pure-button filter-button';
   return (name === filter_status) ? selected_class : unselected_class;
 }
 
@@ -130,8 +130,8 @@ function aniFlyIn(ctrl, prop, delay) {
 // a diagonal top left to bottom left reveal
 function aniDelayFromPosition(elem) {
   // TODO make calc numbers dynamic based on css sizes
-  var x_pos = (elem.getBoundingClientRect().left + 210) / 64;
-  var y_pos = (elem.parentElement.getBoundingClientRect().top - 41) / 62;
+  let x_pos = (elem.getBoundingClientRect().left + 210) / 64;
+  let y_pos = (elem.parentElement.getBoundingClientRect().top - 41) / 62;
   return x_pos + y_pos;
 }
 
@@ -139,10 +139,10 @@ function aniDelayFromPosition(elem) {
 // TODO: could be refactored using a closure/currying and accept the items.dict as the first arg.
 function addTooltip(element, isInitialized, desc) {
   if (isInitialized) return;
-  var name = element.alt; // img.alt
-  var text = '<h3>' + name + '</h3>' + desc;
+  let name = element.alt; // img.alt
+  let text = '<h3>' + name + '</h3>' + desc;
 
-  var myOpentip = new Opentip(element, text, { //eslint-disable-line no-unused-vars
+  let myOpentip = new Opentip(element, text, { //eslint-disable-line no-unused-vars
     style: "dark", // Others: alert, dark, glass, drop
     showOn: 'mouseover',
     tipJoint: "top"

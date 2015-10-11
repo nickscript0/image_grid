@@ -34,7 +34,7 @@ class Controller {
 }
 
 //initialize the application
-m.module(document.getElementById("ig_app"), {
+m.module(document.getElementById("app"), {
   controller: Controller,
   view: main_view
 });

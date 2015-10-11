@@ -72,7 +72,7 @@ export class Items {
     }
 
     // TODO: this shouldn't be redeclared each time this function is called
-    var FILTER_ITEM = {
+    let FILTER_ITEM = {
       'All': true,
       'Items': (raw_items[item_key].type === 'item'),
       'Trinkets': (raw_items[item_key].type === 'trinket'),
@@ -89,12 +89,12 @@ export class Items {
   search(term: string) {
     this.search_term = term;
     console.log("Search term: " + term + ', term==="" ? ' + (term === '').toString());
-    var visible_count = 0;
+    let visible_count = 0;
     term = term.toLowerCase();
 
-    var filtered_keys = Object.getOwnPropertyNames(this.dict).filter(this.filterItem);
+    let filtered_keys = Object.getOwnPropertyNames(this.dict).filter(this.filterItem);
     // Following line being red is acceptable as it works in ES5 latest browsers and will be accepted when I add ES6 linter
-    for (var key of filtered_keys) {
+    for (let key of filtered_keys) {
       if (term === '') {
         this.dict[key].selected = true;
         visible_count += 1;
