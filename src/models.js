@@ -38,6 +38,12 @@ export class Items {
     }).then(this.loadInput);
   }
 
+  setItemFilter(filter_name: string) {
+    this.item_filter = filter_name;
+    // Refresh the search filter
+    this.search(this.search_term);
+  }
+
   loadInput(items_json: Object) {
     this.raw_items = items_json;
 

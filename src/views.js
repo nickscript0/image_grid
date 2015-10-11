@@ -26,11 +26,7 @@ function view_filter_buttons(ctrl) {
   return m('div.controls', FILTERS.map(filter_name => {
     return m('button', {
         class: helper_getButtonClass(filter_name, ctrl.items.item_filter),
-        onclick: () => {
-          ctrl.items.item_filter = filter_name;
-          // Refresh the search filter
-          ctrl.updateSearch(ctrl.items.search_term);
-        }
+        onclick: () => ctrl.items.setItemFilter(filter_name)
       },
       filter_name);
   }))
