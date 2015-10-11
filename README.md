@@ -17,4 +17,4 @@ sh run.sh
 
 ## Notes
 - *Why is it not using ES6 imports for external dependencies?* Opentip and mithril.animate don't work out of the box with system.js (e.g., mithril.animate.js monkey patches mithril.js), so external dependencies are imported by html script tags instead of ES6 imports.
-- *Missing feature of Flow type*: I defined a class interface in interfaces.js called 'Ctrl' so that the Controller object passed to the view would be type checked. This is brittle as the declaration could get out of sync with the implementation, it would be nice if Flow supported tying a Class declaration to its implementation (see https://github.com/facebook/flow/issues/833)
+- *Missing feature of Flow type: Tying a class interfaces (so a class declaration could be tied to its implementation).*: See https://github.com/facebook/flow/issues/833
