@@ -1,2 +1,3 @@
-export const RES_PATH = '/res';
-export const FILTERS = ['All', 'Items', 'Trinkets', 'Devil Room', 'Angel Room', 'Treasure Room', 'Shop', 'Cards'];
+/* @flow */
+export const RES_PATH : string = '/res';
+export const FILTERS : Array<string> = ['All', 'Items', 'Trinkets', 'Devil Room', 'Angel Room', 'Treasure Room', 'Shop', 'Cards'];
