@@ -29,7 +29,7 @@ function view_filter_buttons(ctrl) {
         onclick: () => ctrl.items.setItemFilter(filter_name)
       },
       filter_name);
-  }))
+  }));
 }
 
 // Determines button class
@@ -76,7 +76,7 @@ function search_view(ctrl) {
         onkeyup: m.withAttr("value", ctrl.updateSearch)
       })
     ])
-  ])
+  ]);
 }
 
 // Builds an image block

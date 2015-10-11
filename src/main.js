@@ -4,20 +4,20 @@
 import {
   main_view
 }
-from "./src/views";
+from "./lib/views";
 
 import {
   Items
 }
-from "./src/models";
+from "./lib/models";
 
 /* The following class runs into 2 limitations of flowtype currently:
  *  1. I have a separate interface definition in interfaces.js for this class
  *     so that views.js (which is passed the class, not imported) can typecheck.
  *     Because the interface isn't bound to the class definition they can become out of sync
- *     Talking about this problem here: https://github.com/facebook/flow/issues/833
+ *     More about this problem here: https://github.com/facebook/flow/issues/833
  *
- *  2. Binding methods to this in the constructor isn't allowed unless you use
+ *  2. Binding methods to 'this' in the constructor isn't allowed unless you use
  *     the non-restrictive 'any' type e.g. see 'this.updateSearch' below
  */
 class Controller {
