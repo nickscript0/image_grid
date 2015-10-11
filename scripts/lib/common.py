@@ -13,7 +13,7 @@ import BeautifulSoup
 BASE_URL = 'http://bindingofisaacrebirth.gamepedia.com'
 MAIN_DIV_ID = "mw-content-text"
 
-RESOURCE_PATH = 'res'
+RESOURCE_PATH = '../res'
 DESCRIPTIONS_FILE = 'descriptions.json'
 
 MAX_IMAGES = None  # Debugging max number of images to process
