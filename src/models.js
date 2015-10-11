@@ -1,10 +1,20 @@
 /* global m */
+/* @flow */
 import {
   RES_PATH
 }
 from "src/constants";
 
 export class Items {
+  ordered_names: Array < > ;
+  dict: Object;
+  raw_items: Array < > ;
+  item_filter: string;
+  search_term: string;
+  item_count: ? number;
+
+  filterItem: any;
+  loadInput: any;
   constructor() {
     this.ordered_names = [];
     this.dict = {};
@@ -75,9 +85,9 @@ export class Items {
     return FILTER_ITEM[filter_key] || false;
   }
 
-  search(term) {
+  search(term: string) {
     this.search_term = term;
-    console.log("Search term: " + term + ', term==="" ? ' + (term === ''));
+    console.log("Search term: " + term + ', term==="" ? ' + (term === '').toString());
     var visible_count = 0;
     term = term.toLowerCase();
 

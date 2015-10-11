@@ -1,4 +1,5 @@
 {
+  "main": "main.js",
   "jspm": {
     "devDependencies": {
       "babel": "npm:babel-core@^5.8.24",

@@ -1,3 +1,4 @@
+/* @flow */
 /* global m */
 // "use strict";
 
@@ -27,7 +28,11 @@ from "src/views";
 
 
 class Controller {
+  _items: Object;
+  updateSearch: any;
+
   constructor() {
+
     this._items = new Items();
     this.updateSearch = this.updateSearch.bind(this);
   }
