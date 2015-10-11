@@ -93,7 +93,6 @@ export class Items {
     term = term.toLowerCase();
 
     let filtered_keys = Object.getOwnPropertyNames(this.dict).filter(this.filterItem);
-    // Following line being red is acceptable as it works in ES5 latest browsers and will be accepted when I add ES6 linter
     for (let key of filtered_keys) {
       if (term === '') {
         this.dict[key].selected = true;

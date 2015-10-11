@@ -15,12 +15,7 @@ export function main_view(ctrl: Ctrl): m {
       m("div#grid_holder", [
         ctrl.items.ordered_names
         .filter(ctrl.items.filterItem)
-        .map(name => {
-          // TODO: if we want a nice uniform grid look with no vertical spacing
-          // we should use a table with overflow set
-          return image_view(ctrl, name)
-        })
-
+        .map(name => image_view(ctrl, name))
       ]),
       m("div", "Item Count: " + ctrl.items.item_count)
     ])
