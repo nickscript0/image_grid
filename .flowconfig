@@ -1,6 +1,12 @@
 [ignore]
+.*/jspm_packages/.*
+.*/node_modules/.*
+.*/ext/.*
+.*/lib/.*
+.*/old/.*
 
 [include]
+src/
 
 [libs]
 flow_interfaces/

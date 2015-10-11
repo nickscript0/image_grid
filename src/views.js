@@ -1,11 +1,16 @@
-/* global m Opentip */
+/* @flow */
+
 // Views
+
+declare class Opentip {}
+declare var m: any;
+
 import {
   FILTERS
 }
 from "./constants";
 
-export function main_view(ctrl) {
+export function main_view(ctrl: Object): m {
   return m("div", [
     m('div.filter-buttons', view_filter_buttons(ctrl)),
     m("div", [

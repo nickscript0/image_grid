@@ -95,8 +95,6 @@ export class Items {
     var visible_count = 0;
     term = term.toLowerCase();
 
-
-
     var filtered_keys = Object.getOwnPropertyNames(this.dict).filter(this.filterItem);
     // Following line being red is acceptable as it works in ES5 latest browsers and will be accepted when I add ES6 linter
     for (var key of filtered_keys) {
@@ -114,6 +112,5 @@ export class Items {
     console.log(visible_count + ' items visible');
     this.item_count = visible_count;
   }
-
 
 }

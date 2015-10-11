@@ -5,14 +5,15 @@ declare class m {
 }
 
 import {
+  main_view
+}
+from "./src/views";
+
+import {
   Items
 }
 from "./src/models";
 
-import {
-  main_view
-}
-from "./src/views";
 
 
 class Controller {
