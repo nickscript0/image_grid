@@ -15,7 +15,7 @@ export function main_view(ctrl: Ctrl): m {
       m("div#grid_holder", [
         ctrl.items.ordered_names
         .filter(ctrl.items.filterItem)
-        .map(function(name) {
+        .map(name => {
           // TODO: if we want a nice uniform grid look with no vertical spacing
           // we should use a table with overflow set
           return image_view(ctrl, name)
@@ -28,10 +28,10 @@ export function main_view(ctrl: Ctrl): m {
 }
 
 function view_filter_buttons(ctrl) {
-  return m('div.controls', FILTERS.map(function(filter_name) {
+  return m('div.controls', FILTERS.map(filter_name => {
     return m('button', {
         class: helper_getButtonClass(filter_name, ctrl.items.item_filter),
-        onclick: function() {
+        onclick: () => {
           ctrl.items.item_filter = filter_name;
           // Refresh the search filter
           ctrl.updateSearch(ctrl.items.search_term);
@@ -78,7 +78,7 @@ function search_view(ctrl) {
           width: "70%",
           display: "inline-block"
         },
-        config: function(el) {
+        config: el => {
           el.focus(); // This gives the search box focus after each render
         },
         autofocus: 'autofocus', // Not sure what this is from? it seems to have no meaning
@@ -99,7 +99,7 @@ function image_view(ctrl, name) {
     }()
   }, [
     m.e("img.wikitable", {
-      config: function(element, isInitialized, context) {
+      config: (element, isInitialized, context) => {
         aniFlyIn(ctrl, m.prop(0), aniDelayFromPosition(element))(element, isInitialized, context);
       },
       src: item.image_url,
@@ -113,8 +113,8 @@ function image_view(ctrl, name) {
 
 // Adds a fly in animation to elements
 function aniFlyIn(ctrl, prop, delay) {
-  return function(el, isInitialized) {
-    setTimeout(function() {
+  return (el, isInitialized) => {
+    setTimeout(() => {
       m.animateProperties(el, {
         scale: 1,
         opacity: 1,
