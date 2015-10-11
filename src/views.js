@@ -39,7 +39,7 @@ function helper_getButtonClass(name, filter_status) {
   return (name === filter_status) ? selected_class : unselected_class;
 }
 
-// search
+// search input
 function search_view(ctrl) {
   return m("div", {
     style: {

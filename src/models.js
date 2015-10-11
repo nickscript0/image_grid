@@ -2,7 +2,7 @@
 /* global m */
 
 import {
-  RES_PATH
+  RES_PATH, FILTER_ITEM
 }
 from "./constants";
 
@@ -77,19 +77,7 @@ export class Items {
       return false;
     }
 
-    // TODO: this shouldn't be redeclared each time this function is called
-    let FILTER_ITEM = {
-      'All': true,
-      'Items': (raw_items[item_key].type === 'item'),
-      'Trinkets': (raw_items[item_key].type === 'trinket'),
-      'Devil Room': raw_items[item_key].hasOwnProperty('room_devil'),
-      'Angel Room': raw_items[item_key].hasOwnProperty('room_angel'),
-      'Treasure Room': raw_items[item_key].hasOwnProperty('room_treasure'),
-      'Shop': raw_items[item_key].hasOwnProperty('room_shop'),
-      'Cards': (raw_items[item_key].type === 'card')
-    };
-
-    return FILTER_ITEM[filter_key] || false;
+    return FILTER_ITEM[filter_key](raw_items[item_key]) || false;
   }
 
   search(term: string) {
