@@ -14,8 +14,6 @@ import {
 }
 from "./src/models";
 
-
-
 class Controller {
   items: Object;
   updateSearch: any;

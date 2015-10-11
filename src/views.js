@@ -5,12 +5,20 @@
 declare class Opentip {}
 declare var m: any;
 
+declare class Ctrl {
+  items: Object;
+  updateSearch(a: string): Object; // TODO: how to declare no return?
+
+  //constructor: any;
+}
+
+
 import {
   FILTERS
 }
 from "./constants";
 
-export function main_view(ctrl: Object): m {
+export function main_view(ctrl: Ctrl): m {
   return m("div", [
     m('div.filter-buttons', view_filter_buttons(ctrl)),
     m("div", [
