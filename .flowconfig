@@ -9,6 +9,6 @@
 
 
 [libs]
-flow_interfaces/
+src/flow_interfaces/
 
 [options]
