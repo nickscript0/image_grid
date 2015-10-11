@@ -10,7 +10,7 @@ import {
 from "./constants";
 
 export class Items {
-  ordered_names: Array < > ;
+  ordered_names: Array < string > ;
   dict: Object;
   raw_items: Object;
   item_filter: string;
