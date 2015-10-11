@@ -1,18 +1,7 @@
 /* @flow */
+/* global Ctrl m Opentip */
 
 // Views
-
-declare class Opentip {}
-declare var m: any;
-
-declare class Ctrl {
-  items: Object;
-  updateSearch(a: string): Object; // TODO: how to declare no return?
-
-  //constructor: any;
-}
-
-
 import {
   FILTERS
 }

@@ -1,8 +1,5 @@
 /* @flow */
-
-declare class m {
-  static request(a: Object): Object
-}
+/* global m */
 
 import {
   RES_PATH

@@ -4,6 +4,7 @@
 .*/ext/.*
 .*/lib/.*
 .*/old/.*
+.*/flow_interfaces/.*
 
 [include]
 src/

@@ -1,8 +1,5 @@
 /* @flow */
-
-declare class m {
-  static module(a: Object, b: Object): Object
-}
+/* global m */
 
 import {
   main_view
@@ -19,7 +16,6 @@ class Controller {
   updateSearch: any;
 
   constructor() {
-
     this.items = new Items();
     this.updateSearch = this.updateSearch.bind(this);
   }
