@@ -16,5 +16,6 @@ sh run.sh
 ```
 
 ## Notes
+- *Flow and ES6 (jspm) imports:* I had to modify ES6 imports to be relative imports for Flow to work. e.g., change ```import { RES_PATH } from "js/lib/constants";``` to ```import { RES_PATH } from "./constants";```
 - *Why am I not using ES6 imports for external dependencies?* Opentip and mithril.animate don't work out of the box with system.js (e.g., mithril.animate.js monkey patches mithril.js), so external dependencies are imported by html script tags instead of ES6 imports.
 - *Missing feature of Flow type: Tying a class declaration to its implementation*: See https://github.com/facebook/flow/issues/833
