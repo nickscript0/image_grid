@@ -77,7 +77,7 @@ export class Items {
       return false;
     }
 
-    return FILTER_ITEM[filter_key](raw_items[item_key]) || false;
+    return FILTER_ITEM(filter_key, raw_items[item_key]) || false;
   }
 
   search(term: string) {
