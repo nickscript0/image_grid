@@ -1,14 +1,18 @@
-/* global m */
 /* @flow */
+
+declare class m {
+  static request(a: Object): Object
+}
+
 import {
   RES_PATH
 }
-from "src/constants";
+from "./constants";
 
 export class Items {
   ordered_names: Array < > ;
   dict: Object;
-  raw_items: Array < > ;
+  raw_items: Object;
   item_filter: string;
   search_term: string;
   item_count: ? number;
@@ -18,7 +22,7 @@ export class Items {
   constructor() {
     this.ordered_names = [];
     this.dict = {};
-    this.raw_items = [];
+    this.raw_items = {};
     this.item_filter = 'All';
     this.search_term = '';
     this.item_count = null;
@@ -37,7 +41,7 @@ export class Items {
     }).then(this.loadInput);
   }
 
-  loadInput(items_json) {
+  loadInput(items_json: Object) {
     this.raw_items = items_json;
 
     for (let key in items_json) {
@@ -61,7 +65,7 @@ export class Items {
     this.item_count = this.ordered_names.length;
   }
 
-  filterItem(name) {
+  filterItem(name: string): boolean {
     let item_key = this.dict[name].original_key;
     let filter_key = this.item_filter;
     let raw_items = this.raw_items;
