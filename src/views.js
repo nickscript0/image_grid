@@ -3,7 +3,7 @@
 import {
   FILTERS
 }
-from "src/constants";
+from "./constants";
 
 export function main_view(ctrl) {
   return m("div", [
