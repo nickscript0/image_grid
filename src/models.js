@@ -28,10 +28,10 @@ export class Items {
     this.filterItem = this.filterItem.bind(this);
     this.loadInput = this.loadInput.bind(this);
 
-    this.requestAndLoadData();
+    this._requestAndLoadData();
   }
 
-  requestAndLoadData() {
+  _requestAndLoadData() {
     m.request({
       method: "GET",
       url: RES_PATH + "/descriptions.json"
